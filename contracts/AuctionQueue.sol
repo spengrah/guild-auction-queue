@@ -10,7 +10,9 @@ contract AuctionQueue {
     IMOLOCH public moloch;
     uint256 public lockupPeriod; // number of seconds
 
-    mapping(bytes32 => Bid) bids; // externalId => bid
+    // -- Data Models --
+
+    mapping(bytes32 => Bid) public bids; // externalId => bid
 
     struct Bid {
         uint256 amount;
@@ -20,11 +22,15 @@ contract AuctionQueue {
         bool active;
     }
 
+    // -- Events --
+
     event NewBid(uint256 amount, bytes32 externalId, uint256 createdAt);
     event BidIncreased(uint256 newAmount, bytes32 externalId);
     event BidWithdrawn(uint256 newAmount, bytes32 externalId);
     event BidCanceled(bytes32 externalId);
     event BidFulfilled(address fulfilledBy, bytes32 externalId);
+
+    // -- Functions --
 
     constructor(
         address _token,
@@ -58,6 +64,7 @@ contract AuctionQueue {
 
     function increaseBid(uint256 _amount, bytes32 _externalId) external {
         Bid storage bid = bids[_externalId];
+        require(bid.active, "bid inactive");
         require(bid.submitter == msg.sender, "must be submitter");
         bid.amount += _amount;
 
@@ -71,6 +78,7 @@ contract AuctionQueue {
 
     function withdrawBid(uint256 _amount, bytes32 _externalId) external {
         Bid storage bid = bids[_externalId];
+        require(bid.active, "bid inactive");
         require(
             (bid.createdAt + lockupPeriod) < block.timestamp,
             "lockupPeriod not over"
@@ -86,6 +94,7 @@ contract AuctionQueue {
 
     function cancelBid(bytes32 _externalId) external {
         Bid storage bid = bids[_externalId];
+        require(bid.active, "bid inactive");
         require(
             (bid.createdAt + lockupPeriod) < block.timestamp,
             "lockupPeriod not over"
@@ -101,6 +110,7 @@ contract AuctionQueue {
 
     function fulfill(bytes32 _externalId) external memberOnly {
         Bid storage bid = bids[_externalId];
+        require(bid.active, "bid inactive");
 
         bid.active = false;
 
