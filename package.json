@@ -1,0 +1,14 @@
+{
+  "name": "auction-queue",
+  "version": "0.1",
+  "main": "index.js",
+  "repository": "https://github.com/slgraham/auction-queue.git",
+  "author": "spengrah <code@spengrah.xyz>",
+  "license": "MIT",
+  "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "dotenv": "^9.0.2",
+    "ethers": "^5.1.4",
+    "hardhat": "^2.3.0"
+  }
+}
