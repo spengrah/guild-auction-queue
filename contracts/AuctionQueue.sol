@@ -8,7 +8,8 @@ import "contracts/interfaces/IMOLOCH.sol";
 contract AuctionQueue {
     IERC20 public token;
     IMOLOCH public moloch;
-    uint256 public lockupPeriod; // number of seconds
+    address public destination; // where tokens go when bids are accepted
+    uint256 public lockupPeriod; // period for which bids are locked and cannot be withdrawn, in seconds
 
     // -- Data Models --
 
@@ -17,8 +18,8 @@ contract AuctionQueue {
     struct Bid {
         uint256 amount;
         address submitter;
-        bytes32 externalId;
-        uint256 createdAt; // e.g. hire-us form id; must be unique
+        bytes32 externalId; // e.g. hire-us form id; must be unique
+        uint256 createdAt; // block.timestamp from tx when bid was created
         bool active;
     }
 
@@ -28,24 +29,26 @@ contract AuctionQueue {
     event BidIncreased(uint256 newAmount, bytes32 externalId);
     event BidWithdrawn(uint256 newAmount, bytes32 externalId);
     event BidCanceled(bytes32 externalId);
-    event BidFulfilled(address fulfilledBy, bytes32 externalId);
+    event BidAccepted(address acceptedBy, bytes32 externalId);
 
     // -- Functions --
 
     constructor(
         address _token,
         address _moloch,
+        address _destination,
         uint256 _lockupPeriod
     ) {
         token = IERC20(_token);
         moloch = IMOLOCH(_moloch);
+        destination = _destination;
         lockupPeriod = _lockupPeriod;
     }
 
     function submitBid(uint256 _amount, bytes32 _externalId) external {
-        require(!bids[_externalId].active, "bid already exists");
-
         Bid storage bid = bids[_externalId];
+        require(!bid.active, "bid already exists");
+
         bid.amount = _amount;
         bid.submitter = msg.sender;
 
@@ -85,7 +88,7 @@ contract AuctionQueue {
         );
         require(bid.submitter == msg.sender, "must be submitter");
 
-        _decreaseBid(_amount, bid); // QUESTION: need to be inside a require?
+        require(_decreaseBid(_amount, bid), "bid decreased failed");
 
         require(token.transfer(msg.sender, _amount), "token transfer failed");
 
@@ -103,12 +106,12 @@ contract AuctionQueue {
 
         bid.active = false;
 
-        _decreaseBid(bid.amount, bid); // QUESTION: need to be inside a require?
+        require(_decreaseBid(bid.amount, bid), "bid decrease failed");
 
         emit BidCanceled(_externalId);
     }
 
-    function fulfill(bytes32 _externalId) external memberOnly {
+    function acceptBid(bytes32 _externalId) external memberOnly {
         Bid storage bid = bids[_externalId];
         require(bid.active, "bid inactive");
 
@@ -116,16 +119,19 @@ contract AuctionQueue {
 
         uint256 amount = bid.amount;
         bid.amount = 0;
-        require(token.transfer(address(moloch), amount)); // QUESTION: should this go to the DAO or a minion, or somewhere else?
+        require(token.transfer(destination, amount));
 
-        emit BidFulfilled(msg.sender, _externalId);
+        emit BidAccepted(msg.sender, _externalId);
     }
 
     // -- Internal Functions --
 
-    function _decreaseBid(uint256 _amount, Bid storage bid) internal {
-        require(bid.amount >= _amount, "existing bid amount too low");
-        bid.amount -= _amount;
+    function _decreaseBid(uint256 _amount, Bid storage _bid)
+        internal
+        returns (bool)
+    {
+        _bid.amount -= _amount; // reverts on underflow (ie if _amount > _bid.amount)
+        return true;
     }
 
     // -- Helper Functions --
