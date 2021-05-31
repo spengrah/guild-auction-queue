@@ -4,8 +4,9 @@ pragma solidity ^0.8.0;
 
 import "contracts/interfaces/IERC20.sol";
 import "contracts/interfaces/IMOLOCH.sol";
+import "contracts/ReentrancyGuard.sol";
 
-contract AuctionQueue {
+contract AuctionQueue is ReentrancyGuard {
     IERC20 public token;
     IMOLOCH public moloch;
     address public destination; // where tokens go when bids are accepted
@@ -39,7 +40,10 @@ contract AuctionQueue {
         lockupPeriod = _lockupPeriod;
     }
 
-    function submitBid(uint256 _amount, bytes32 _details) external {
+    function submitBid(uint256 _amount, bytes32 _details)
+        external
+        nonReentrant
+    {
         // TODO how to prevent duplicate bids?
         Bid storage bid = bids[newBidId];
 
@@ -60,7 +64,7 @@ contract AuctionQueue {
         emit NewBid(_amount, id, _details, timestamp);
     }
 
-    function increaseBid(uint256 _amount, uint256 _id) external {
+    function increaseBid(uint256 _amount, uint256 _id) external nonReentrant {
         require(_id < newBidId, "invalid bid");
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
@@ -75,7 +79,7 @@ contract AuctionQueue {
         emit BidIncreased(bid.amount, _id);
     }
 
-    function withdrawBid(uint256 _amount, uint32 _id) external {
+    function withdrawBid(uint256 _amount, uint32 _id) external nonReentrant {
         require(_id < newBidId, "invalid bid");
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
@@ -92,7 +96,7 @@ contract AuctionQueue {
         emit BidWithdrawn(bid.amount, _id);
     }
 
-    function cancelBid(uint256 _id) external {
+    function cancelBid(uint256 _id) external nonReentrant {
         require(_id < newBidId, "invalid bid");
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
@@ -109,7 +113,7 @@ contract AuctionQueue {
         emit BidCanceled(_id);
     }
 
-    function acceptBid(uint256 _id) external memberOnly {
+    function acceptBid(uint256 _id) external memberOnly nonReentrant {
         require(_id < newBidId, "invalid bid");
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
