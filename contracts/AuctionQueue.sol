@@ -15,7 +15,7 @@ contract AuctionQueue {
 
     mapping(bytes32 => Bid) public bids; // externalId => bid
 
-    enum BidStatus {null, queued, accepted, cancelled}
+    enum BidStatus {empty, queued, accepted, cancelled}
     struct Bid {
         uint256 amount;
         address submitter;
@@ -40,7 +40,7 @@ contract AuctionQueue {
 
     function submitBid(uint256 _amount, bytes32 _externalId) external {
         Bid storage bid = bids[_externalId];
-        require(bid.status == BidStatus.null, "bid already exists");
+        require(bid.status == BidStatus.empty, "bid already exists");
 
         bid.amount = _amount;
         bid.submitter = msg.sender;
