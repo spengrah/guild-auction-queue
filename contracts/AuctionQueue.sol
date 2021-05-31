@@ -10,17 +10,18 @@ contract AuctionQueue {
     IMOLOCH public moloch;
     address public destination; // where tokens go when bids are accepted
     uint256 public lockupPeriod; // period for which bids are locked and cannot be withdrawn, in seconds
+    uint256 public newBidId; // the id of the next bid to be submitted; starts at 0
 
     // -- Data Models --
 
-    mapping(bytes32 => Bid) public bids; // externalId => bid
+    mapping(uint256 => Bid) public bids; // externalId => bid
 
-    enum BidStatus {empty, queued, accepted, cancelled}
+    enum BidStatus {queued, accepted, cancelled}
     struct Bid {
         uint256 amount;
         address submitter;
-        bytes32 externalId; // e.g. hire-us form id; must be unique
         uint256 createdAt; // block.timestamp from tx when bid was created
+        bytes32 details; // details of bid, eg an IPFS hash
         BidStatus status;
     }
 
@@ -38,28 +39,30 @@ contract AuctionQueue {
         lockupPeriod = _lockupPeriod;
     }
 
-    function submitBid(uint256 _amount, bytes32 _externalId) external {
-        Bid storage bid = bids[_externalId];
-        require(bid.status == BidStatus.empty, "bid already exists");
+    function submitBid(uint256 _amount, bytes32 _details) external {
+        // TODO how to prevent duplicate bids?
+        Bid storage bid = bids[newBidId];
 
         bid.amount = _amount;
         bid.submitter = msg.sender;
+        bid.status = BidStatus.queued;
 
         uint256 timestamp = block.timestamp;
-
         bid.createdAt = timestamp;
-        bid.status = BidStatus.queued;
+        uint256 id = newBidId;
+        newBidId++;
 
         require(
             token.transferFrom(msg.sender, address(this), _amount),
             "token transfer failed"
         );
 
-        emit NewBid(_amount, _externalId, timestamp);
+        emit NewBid(_amount, id, _details, timestamp);
     }
 
-    function increaseBid(uint256 _amount, bytes32 _externalId) external {
-        Bid storage bid = bids[_externalId];
+    function increaseBid(uint256 _amount, uint256 _id) external {
+        require(_id < newBidId, "invalid bid");
+        Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
         require(bid.submitter == msg.sender, "must be submitter");
         bid.amount += _amount;
@@ -69,11 +72,12 @@ contract AuctionQueue {
             "token transfer failed"
         );
 
-        emit BidIncreased(bid.amount, _externalId);
+        emit BidIncreased(bid.amount, _id);
     }
 
-    function withdrawBid(uint256 _amount, bytes32 _externalId) external {
-        Bid storage bid = bids[_externalId];
+    function withdrawBid(uint256 _amount, uint32 _id) external {
+        require(_id < newBidId, "invalid bid");
+        Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
         require(
             (bid.createdAt + lockupPeriod) < block.timestamp,
@@ -85,11 +89,12 @@ contract AuctionQueue {
 
         require(token.transfer(msg.sender, _amount), "token transfer failed");
 
-        emit BidWithdrawn(bid.amount, _externalId);
+        emit BidWithdrawn(bid.amount, _id);
     }
 
-    function cancelBid(bytes32 _externalId) external {
-        Bid storage bid = bids[_externalId];
+    function cancelBid(uint256 _id) external {
+        require(_id < newBidId, "invalid bid");
+        Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
         require(
             (bid.createdAt + lockupPeriod) < block.timestamp,
@@ -101,11 +106,12 @@ contract AuctionQueue {
 
         require(_decreaseBid(bid.amount, bid), "bid decrease failed");
 
-        emit BidCanceled(_externalId);
+        emit BidCanceled(_id);
     }
 
-    function acceptBid(bytes32 _externalId) external memberOnly {
-        Bid storage bid = bids[_externalId];
+    function acceptBid(uint256 _id) external memberOnly {
+        require(_id < newBidId, "invalid bid");
+        Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
 
         bid.status = BidStatus.accepted;
@@ -114,7 +120,7 @@ contract AuctionQueue {
         bid.amount = 0;
         require(token.transfer(destination, amount));
 
-        emit BidAccepted(msg.sender, _externalId);
+        emit BidAccepted(msg.sender, _id);
     }
 
     // -- Internal Functions --
@@ -142,9 +148,14 @@ contract AuctionQueue {
 
     // -- Events --
 
-    event NewBid(uint256 amount, bytes32 externalId, uint256 createdAt);
-    event BidIncreased(uint256 newAmount, bytes32 externalId);
-    event BidWithdrawn(uint256 newAmount, bytes32 externalId);
-    event BidCanceled(bytes32 externalId);
-    event BidAccepted(address acceptedBy, bytes32 externalId);
+    event NewBid(
+        uint256 amount,
+        uint256 id,
+        bytes32 details,
+        uint256 createdAt
+    );
+    event BidIncreased(uint256 newAmount, uint256 id);
+    event BidWithdrawn(uint256 newAmount, uint256 id);
+    event BidCanceled(uint256 id);
+    event BidAccepted(address acceptedBy, uint256 id);
 }
