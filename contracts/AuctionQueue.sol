@@ -15,21 +15,14 @@ contract AuctionQueue {
 
     mapping(bytes32 => Bid) public bids; // externalId => bid
 
+    enum BidStatus {null, queued, accepted, cancelled}
     struct Bid {
         uint256 amount;
         address submitter;
         bytes32 externalId; // e.g. hire-us form id; must be unique
         uint256 createdAt; // block.timestamp from tx when bid was created
-        bool active;
+        BidStatus status;
     }
-
-    // -- Events --
-
-    event NewBid(uint256 amount, bytes32 externalId, uint256 createdAt);
-    event BidIncreased(uint256 newAmount, bytes32 externalId);
-    event BidWithdrawn(uint256 newAmount, bytes32 externalId);
-    event BidCanceled(bytes32 externalId);
-    event BidAccepted(address acceptedBy, bytes32 externalId);
 
     // -- Functions --
 
@@ -47,7 +40,7 @@ contract AuctionQueue {
 
     function submitBid(uint256 _amount, bytes32 _externalId) external {
         Bid storage bid = bids[_externalId];
-        require(!bid.active, "bid already exists");
+        require(bid.status == BidStatus.null, "bid already exists");
 
         bid.amount = _amount;
         bid.submitter = msg.sender;
@@ -55,7 +48,7 @@ contract AuctionQueue {
         uint256 timestamp = block.timestamp;
 
         bid.createdAt = timestamp;
-        bid.active = true;
+        bid.status = BidStatus.queued;
 
         require(
             token.transferFrom(msg.sender, address(this), _amount),
@@ -67,7 +60,7 @@ contract AuctionQueue {
 
     function increaseBid(uint256 _amount, bytes32 _externalId) external {
         Bid storage bid = bids[_externalId];
-        require(bid.active, "bid inactive");
+        require(bid.status == BidStatus.queued, "bid inactive");
         require(bid.submitter == msg.sender, "must be submitter");
         bid.amount += _amount;
 
@@ -81,7 +74,7 @@ contract AuctionQueue {
 
     function withdrawBid(uint256 _amount, bytes32 _externalId) external {
         Bid storage bid = bids[_externalId];
-        require(bid.active, "bid inactive");
+        require(bid.status == BidStatus.queued, "bid inactive");
         require(
             (bid.createdAt + lockupPeriod) < block.timestamp,
             "lockupPeriod not over"
@@ -97,14 +90,14 @@ contract AuctionQueue {
 
     function cancelBid(bytes32 _externalId) external {
         Bid storage bid = bids[_externalId];
-        require(bid.active, "bid inactive");
+        require(bid.status == BidStatus.queued, "bid inactive");
         require(
             (bid.createdAt + lockupPeriod) < block.timestamp,
             "lockupPeriod not over"
         );
         require(bid.submitter == msg.sender, "must be submitter");
 
-        bid.active = false;
+        bid.status = BidStatus.cancelled;
 
         require(_decreaseBid(bid.amount, bid), "bid decrease failed");
 
@@ -113,9 +106,9 @@ contract AuctionQueue {
 
     function acceptBid(bytes32 _externalId) external memberOnly {
         Bid storage bid = bids[_externalId];
-        require(bid.active, "bid inactive");
+        require(bid.status == BidStatus.queued, "bid inactive");
 
-        bid.active = false;
+        bid.status = BidStatus.accepted;
 
         uint256 amount = bid.amount;
         bid.amount = 0;
@@ -146,4 +139,12 @@ contract AuctionQueue {
         require(isMember(msg.sender), "not member of moloch");
         _;
     }
+
+    // -- Events --
+
+    event NewBid(uint256 amount, bytes32 externalId, uint256 createdAt);
+    event BidIncreased(uint256 newAmount, bytes32 externalId);
+    event BidWithdrawn(uint256 newAmount, bytes32 externalId);
+    event BidCanceled(bytes32 externalId);
+    event BidAccepted(address acceptedBy, bytes32 externalId);
 }
