@@ -2,7 +2,6 @@ const { expect, use } = require('chai');
 const { deployContract } = require('ethereum-waffle');
 const { BigNumber, constants, Signer, providers } = require('ethers');
 const { artifacts, ethers, waffle } = require('hardhat');
-const { deployMockContract } = waffle;
 
 const DETAILS =
 	'0x1000000000000000000000000000000000000000000000000000000000000000';
@@ -20,7 +19,7 @@ describe('AuctionQueue', () => {
 		wallets = await ethers.getSigners();
 		[deployer, bidder, accepter, otherWallet, destination] = wallets;
 		TestERC20 = await artifacts.readArtifact('TestERC20');
-		AuctionQueue = await artifacts.readArtifact('AuctionQueue');
+		GuildAuctionQueue = await artifacts.readArtifact('GuildAuctionQueue');
 		Moloch = await artifacts.readArtifact('MolochTest');
 		lockupPeriod = 60; // 1 minute
 
@@ -30,7 +29,7 @@ describe('AuctionQueue', () => {
 
 	describe('deployment', () => {
 		before('deployAuctionQueue', async () => {
-			auctionQueue = await deployContract(deployer, AuctionQueue, [
+			auctionQueue = await deployContract(deployer, GuildAuctionQueue, [
 				token.address,
 				moloch.address,
 				destination.address,
@@ -64,7 +63,7 @@ describe('AuctionQueue', () => {
 
 	describe('submitBid', () => {
 		beforeEach(async () => {
-			auctionQueue = await deployContract(deployer, AuctionQueue, [
+			auctionQueue = await deployContract(deployer, GuildAuctionQueue, [
 				token.address,
 				moloch.address,
 				destination.address,
@@ -117,12 +116,16 @@ describe('AuctionQueue', () => {
 
 		describe(':)', () => {
 			before(async () => {
-				auctionQueue = await deployContract(deployer, AuctionQueue, [
-					token.address,
-					moloch.address,
-					destination.address,
-					lockupPeriod,
-				]);
+				auctionQueue = await deployContract(
+					deployer,
+					GuildAuctionQueue,
+					[
+						token.address,
+						moloch.address,
+						destination.address,
+						lockupPeriod,
+					]
+				);
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
@@ -155,12 +158,16 @@ describe('AuctionQueue', () => {
 
 		describe(':(', () => {
 			before(async () => {
-				auctionQueue = await deployContract(deployer, AuctionQueue, [
-					token.address,
-					moloch.address,
-					destination.address,
-					lockupPeriod,
-				]);
+				auctionQueue = await deployContract(
+					deployer,
+					GuildAuctionQueue,
+					[
+						token.address,
+						moloch.address,
+						destination.address,
+						lockupPeriod,
+					]
+				);
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
@@ -199,12 +206,16 @@ describe('AuctionQueue', () => {
 
 		describe(':)', () => {
 			before(async () => {
-				auctionQueue = await deployContract(deployer, AuctionQueue, [
-					token.address,
-					moloch.address,
-					destination.address,
-					lockupPeriod,
-				]);
+				auctionQueue = await deployContract(
+					deployer,
+					GuildAuctionQueue,
+					[
+						token.address,
+						moloch.address,
+						destination.address,
+						lockupPeriod,
+					]
+				);
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
@@ -241,12 +252,16 @@ describe('AuctionQueue', () => {
 
 		describe(':(', () => {
 			before(async () => {
-				auctionQueue = await deployContract(deployer, AuctionQueue, [
-					token.address,
-					moloch.address,
-					destination.address,
-					lockupPeriod,
-				]);
+				auctionQueue = await deployContract(
+					deployer,
+					GuildAuctionQueue,
+					[
+						token.address,
+						moloch.address,
+						destination.address,
+						lockupPeriod,
+					]
+				);
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
@@ -300,12 +315,16 @@ describe('AuctionQueue', () => {
 
 		describe(':)', () => {
 			before(async () => {
-				auctionQueue = await deployContract(deployer, AuctionQueue, [
-					token.address,
-					moloch.address,
-					destination.address,
-					lockupPeriod,
-				]);
+				auctionQueue = await deployContract(
+					deployer,
+					GuildAuctionQueue,
+					[
+						token.address,
+						moloch.address,
+						destination.address,
+						lockupPeriod,
+					]
+				);
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
@@ -342,12 +361,16 @@ describe('AuctionQueue', () => {
 
 		describe(':(', () => {
 			before(async () => {
-				auctionQueue = await deployContract(deployer, AuctionQueue, [
-					token.address,
-					moloch.address,
-					destination.address,
-					lockupPeriod,
-				]);
+				auctionQueue = await deployContract(
+					deployer,
+					GuildAuctionQueue,
+					[
+						token.address,
+						moloch.address,
+						destination.address,
+						lockupPeriod,
+					]
+				);
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
@@ -393,12 +416,16 @@ describe('AuctionQueue', () => {
 			let queue_bidder;
 
 			before(async () => {
-				auctionQueue = await deployContract(deployer, AuctionQueue, [
-					token.address,
-					moloch.address,
-					destination.address,
-					lockupPeriod,
-				]);
+				auctionQueue = await deployContract(
+					deployer,
+					GuildAuctionQueue,
+					[
+						token.address,
+						moloch.address,
+						destination.address,
+						lockupPeriod,
+					]
+				);
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				await token.setBalance(destination.address, 0);
@@ -434,12 +461,16 @@ describe('AuctionQueue', () => {
 
 		describe(':(', () => {
 			before(async () => {
-				auctionQueue = await deployContract(deployer, AuctionQueue, [
-					token.address,
-					moloch.address,
-					destination.address,
-					lockupPeriod,
-				]);
+				auctionQueue = await deployContract(
+					deployer,
+					GuildAuctionQueue,
+					[
+						token.address,
+						moloch.address,
+						destination.address,
+						lockupPeriod,
+					]
+				);
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);

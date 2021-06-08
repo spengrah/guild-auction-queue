@@ -6,7 +6,7 @@ import "contracts/interfaces/IERC20.sol";
 import "contracts/interfaces/IMOLOCH.sol";
 import "contracts/ReentrancyGuard.sol";
 
-contract AuctionQueue is ReentrancyGuard {
+contract GuildAuctionQueue is ReentrancyGuard {
     IERC20 public token;
     IMOLOCH public moloch;
     address public destination; // where tokens go when bids are accepted
@@ -18,6 +18,7 @@ contract AuctionQueue is ReentrancyGuard {
     mapping(uint256 => Bid) public bids;
 
     enum BidStatus {queued, accepted, cancelled}
+
     struct Bid {
         uint256 amount;
         address submitter;
