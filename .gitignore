@@ -3,3 +3,5 @@ yarn-error.log
 artifacts/
 cache/
 .env
+coverage/
+coverage.json

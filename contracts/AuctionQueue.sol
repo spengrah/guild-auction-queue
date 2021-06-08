@@ -15,7 +15,7 @@ contract AuctionQueue is ReentrancyGuard {
 
     // -- Data Models --
 
-    mapping(uint256 => Bid) public bids; // externalId => bid
+    mapping(uint256 => Bid) public bids;
 
     enum BidStatus {queued, accepted, cancelled}
     struct Bid {
@@ -44,11 +44,11 @@ contract AuctionQueue is ReentrancyGuard {
         external
         nonReentrant
     {
-        // TODO how to prevent duplicate bids?
         Bid storage bid = bids[newBidId];
 
         bid.amount = _amount;
         bid.submitter = msg.sender;
+        bid.details = _details;
         bid.status = BidStatus.queued;
 
         uint256 timestamp = block.timestamp;
@@ -61,7 +61,7 @@ contract AuctionQueue is ReentrancyGuard {
             "token transfer failed"
         );
 
-        emit NewBid(_amount, id, _details, timestamp);
+        emit NewBid(_amount, msg.sender, id, _details, timestamp);
     }
 
     function increaseBid(uint256 _amount, uint256 _id) external nonReentrant {
@@ -83,13 +83,15 @@ contract AuctionQueue is ReentrancyGuard {
         require(_id < newBidId, "invalid bid");
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
+
+        require(bid.submitter == msg.sender, "must be submitter");
+
         require(
             (bid.createdAt + lockupPeriod) < block.timestamp,
             "lockupPeriod not over"
         );
-        require(bid.submitter == msg.sender, "must be submitter");
 
-        require(_decreaseBid(_amount, bid), "bid decreased failed");
+        _decreaseBid(_amount, bid);
 
         require(token.transfer(msg.sender, _amount), "token transfer failed");
 
@@ -100,15 +102,17 @@ contract AuctionQueue is ReentrancyGuard {
         require(_id < newBidId, "invalid bid");
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
+
+        require(bid.submitter == msg.sender, "must be submitter");
+
         require(
             (bid.createdAt + lockupPeriod) < block.timestamp,
             "lockupPeriod not over"
         );
-        require(bid.submitter == msg.sender, "must be submitter");
 
         bid.status = BidStatus.cancelled;
 
-        require(_decreaseBid(bid.amount, bid), "bid decrease failed");
+        require(token.transfer(msg.sender, bid.amount));
 
         emit BidCanceled(_id);
     }
@@ -154,6 +158,7 @@ contract AuctionQueue is ReentrancyGuard {
 
     event NewBid(
         uint256 amount,
+        address submitter,
         uint256 id,
         bytes32 details,
         uint256 createdAt
