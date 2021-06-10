@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "contracts/interfaces/IERC20.sol";
-import "contracts/interfaces/IMOLOCH.sol";
-import "contracts/ReentrancyGuard.sol";
+import "./interfaces/IERC20.sol";
+import "./interfaces/IMOLOCH.sol";
+import "./ReentrancyGuard.sol";
 
 contract GuildAuctionQueue is ReentrancyGuard {
     IERC20 public token;
