@@ -1,40 +1,51 @@
 const { expect } = require('chai');
-const { artifacts, ethers, waffle } = require('hardhat');
+const {
+	artifacts,
+	ethers,
+	waffle,
+	deployments,
+	getChainId,
+} = require('hardhat');
 const { deployContract } = waffle;
 const { BigNumber } = ethers;
+const { lockupPeriod } = require('../deploy/args.json');
+
+async function setup() {
+	await deployments.fixture(['GuildAuctionQueue']);
+	const auctionQueue = await ethers.getContract('GuildAuctionQueue');
+	const token = await ethers.getContract('TestERC20');
+	const moloch = await ethers.getContract('MolochTest');
+
+	return {
+		auctionQueue,
+		token,
+		moloch,
+	};
+}
 
 const DETAILS =
 	'0x1000000000000000000000000000000000000000000000000000000000000000';
 
 describe('AuctionQueue', () => {
-	let wallets;
-	let deployer, bidder, accepter, otherWallet, destination; // wallets
-	let TestERC20, GuildAuctionQueue, Moloch; // artifacts
-	let token, moloch; // deployed contracts
-	let lockupPeriod;
+	let bidder, accepter, otherWallet, destination; // wallets
+	let token, moloch, auctionQueue; // deployed contracts
+	let lockup;
 
 	before(async () => {
-		// provider = ethers.getDefaultProvider();
-		wallets = await ethers.getSigners();
-		[deployer, bidder, accepter, otherWallet, destination] = wallets;
-		TestERC20 = await artifacts.readArtifact('TestERC20');
-		GuildAuctionQueue = await artifacts.readArtifact('GuildAuctionQueue');
-		Moloch = await artifacts.readArtifact('MolochTest');
-		lockupPeriod = 60; // 1 minute
+		[deployer, bidder, accepter, destination, otherWallet] =
+			await ethers.getSigners();
 
-		token = await deployContract(deployer, TestERC20, ['Token', 'TKN', 0]);
-		moloch = await deployContract(deployer, Moloch, [accepter.address]);
+		lockup = lockupPeriod[await getChainId()];
 	});
 
 	describe('deployment', () => {
-		before('deployAuctionQueue', async () => {
-			auctionQueue = await deployContract(deployer, GuildAuctionQueue, [
-				token.address,
-				moloch.address,
-				destination.address,
-				lockupPeriod,
-			]);
+		beforeEach(async () => {
+			const contracts = await setup();
+			auctionQueue = contracts.auctionQueue;
+			token = contracts.token;
+			moloch = contracts.moloch;
 		});
+
 		it('sets the token', async () => {
 			expect(await auctionQueue.token()).to.equal(token.address);
 		});
@@ -47,27 +58,29 @@ describe('AuctionQueue', () => {
 			);
 		});
 		it('sets the lockupPeriod', async () => {
-			expect(await auctionQueue.lockupPeriod()).to.equal(lockupPeriod);
+			expect(await auctionQueue.lockupPeriod()).to.equal(
+				BigNumber.from(lockup)
+			);
 		});
 	});
 
-	before('deploy', async () => {
-		token = await deployContract(deployer, TestERC20, [
-			'Token',
-			'TKN',
-			100,
-		]);
-		moloch = await deployContract(deployer, Moloch, [accepter.address]);
-	});
+	// before('deploy', async () => {
+	// 	token = await deployContract(deployer, TestERC20, [
+	// 		'Token',
+	// 		'TKN',
+	// 		100,
+	// 	]);
+	// 	moloch = await deployContract(deployer, Moloch, [accepter.address]);
+	// });
 
 	describe('submitBid', () => {
 		beforeEach(async () => {
-			auctionQueue = await deployContract(deployer, GuildAuctionQueue, [
-				token.address,
-				moloch.address,
-				destination.address,
-				lockupPeriod,
-			]);
+			const contracts = await setup();
+
+			auctionQueue = contracts.auctionQueue;
+			token = contracts.token;
+			moloch = contracts.moloch;
+
 			queue_bidder = auctionQueue.connect(bidder);
 			await token.setBalance(bidder.address, 100);
 			token_bidder = token.connect(bidder);
@@ -75,6 +88,7 @@ describe('AuctionQueue', () => {
 		});
 		it('creates new Bid', async () => {
 			receipt = await queue_bidder.submitBid(BigNumber.from(75), DETAILS);
+
 			block = await bidder.provider.getBlock(receipt.blockNumber);
 			time = block.timestamp;
 
@@ -114,17 +128,13 @@ describe('AuctionQueue', () => {
 		let queue_bidder;
 
 		describe(':)', () => {
-			before(async () => {
-				auctionQueue = await deployContract(
-					deployer,
-					GuildAuctionQueue,
-					[
-						token.address,
-						moloch.address,
-						destination.address,
-						lockupPeriod,
-					]
-				);
+			beforeEach(async () => {
+				const contracts = await setup();
+
+				auctionQueue = contracts.auctionQueue;
+				token = contracts.token;
+				moloch = contracts.moloch;
+
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
@@ -157,16 +167,12 @@ describe('AuctionQueue', () => {
 
 		describe(':(', () => {
 			before(async () => {
-				auctionQueue = await deployContract(
-					deployer,
-					GuildAuctionQueue,
-					[
-						token.address,
-						moloch.address,
-						destination.address,
-						lockupPeriod,
-					]
-				);
+				const contracts = await setup();
+
+				auctionQueue = contracts.auctionQueue;
+				token = contracts.token;
+				moloch = contracts.moloch;
+
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
@@ -205,16 +211,12 @@ describe('AuctionQueue', () => {
 
 		describe(':)', () => {
 			before(async () => {
-				auctionQueue = await deployContract(
-					deployer,
-					GuildAuctionQueue,
-					[
-						token.address,
-						moloch.address,
-						destination.address,
-						lockupPeriod,
-					]
-				);
+				const contracts = await setup();
+
+				auctionQueue = contracts.auctionQueue;
+				token = contracts.token;
+				moloch = contracts.moloch;
+
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
@@ -223,7 +225,7 @@ describe('AuctionQueue', () => {
 				await queue_bidder.submitBid(BigNumber.from(75), DETAILS);
 
 				// fast forward in time
-				await ethers.provider.send('evm_increaseTime', [lockupPeriod]);
+				await ethers.provider.send('evm_increaseTime', [lockup]);
 				await ethers.provider.send('evm_mine');
 
 				receipt = await queue_bidder.withdrawBid(BigNumber.from(25), 0);
@@ -251,16 +253,12 @@ describe('AuctionQueue', () => {
 
 		describe(':(', () => {
 			before(async () => {
-				auctionQueue = await deployContract(
-					deployer,
-					GuildAuctionQueue,
-					[
-						token.address,
-						moloch.address,
-						destination.address,
-						lockupPeriod,
-					]
-				);
+				const contracts = await setup();
+
+				auctionQueue = contracts.auctionQueue;
+				token = contracts.token;
+				moloch = contracts.moloch;
+
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
@@ -289,7 +287,7 @@ describe('AuctionQueue', () => {
 
 			it('reverts if invalid amount', async () => {
 				// have the bid get unlocked
-				await ethers.provider.send('evm_increaseTime', [lockupPeriod]);
+				await ethers.provider.send('evm_increaseTime', [lockup]);
 				await ethers.provider.send('evm_mine');
 
 				receipt = queue_bidder.withdrawBid(BigNumber.from(76), 0);
@@ -314,16 +312,12 @@ describe('AuctionQueue', () => {
 
 		describe(':)', () => {
 			before(async () => {
-				auctionQueue = await deployContract(
-					deployer,
-					GuildAuctionQueue,
-					[
-						token.address,
-						moloch.address,
-						destination.address,
-						lockupPeriod,
-					]
-				);
+				const contracts = await setup();
+
+				auctionQueue = contracts.auctionQueue;
+				token = contracts.token;
+				moloch = contracts.moloch;
+
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
@@ -332,7 +326,7 @@ describe('AuctionQueue', () => {
 				await queue_bidder.submitBid(BigNumber.from(75), DETAILS);
 
 				// fast forward in time
-				await ethers.provider.send('evm_increaseTime', [lockupPeriod]);
+				await ethers.provider.send('evm_increaseTime', [lockup]);
 				await ethers.provider.send('evm_mine');
 
 				receipt = await queue_bidder.cancelBid(0);
@@ -360,16 +354,12 @@ describe('AuctionQueue', () => {
 
 		describe(':(', () => {
 			before(async () => {
-				auctionQueue = await deployContract(
-					deployer,
-					GuildAuctionQueue,
-					[
-						token.address,
-						moloch.address,
-						destination.address,
-						lockupPeriod,
-					]
-				);
+				const contracts = await setup();
+
+				auctionQueue = contracts.auctionQueue;
+				token = contracts.token;
+				moloch = contracts.moloch;
+
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
@@ -415,16 +405,12 @@ describe('AuctionQueue', () => {
 			let queue_bidder;
 
 			before(async () => {
-				auctionQueue = await deployContract(
-					deployer,
-					GuildAuctionQueue,
-					[
-						token.address,
-						moloch.address,
-						destination.address,
-						lockupPeriod,
-					]
-				);
+				const contracts = await setup();
+
+				auctionQueue = contracts.auctionQueue;
+				token = contracts.token;
+				moloch = contracts.moloch;
+
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				await token.setBalance(destination.address, 0);
@@ -460,16 +446,12 @@ describe('AuctionQueue', () => {
 
 		describe(':(', () => {
 			before(async () => {
-				auctionQueue = await deployContract(
-					deployer,
-					GuildAuctionQueue,
-					[
-						token.address,
-						moloch.address,
-						destination.address,
-						lockupPeriod,
-					]
-				);
+				const contracts = await setup();
+
+				auctionQueue = contracts.auctionQueue;
+				token = contracts.token;
+				moloch = contracts.moloch;
+
 				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
 				token_bidder = token.connect(bidder);
