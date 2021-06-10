@@ -160,7 +160,7 @@ contract GuildAuctionQueue is ReentrancyGuard {
         uint256 amount,
         address submitter,
         uint256 id,
-        bytes32 details,
+        bytes32 details
     );
     event BidIncreased(uint256 newAmount, uint256 id);
     event BidWithdrawn(uint256 newAmount, uint256 id);
