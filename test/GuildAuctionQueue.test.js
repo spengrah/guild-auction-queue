@@ -1,16 +1,15 @@
-const { expect, use } = require('chai');
-const { deployContract } = require('ethereum-waffle');
-const { BigNumber, constants, Signer, providers } = require('ethers');
+const { expect } = require('chai');
 const { artifacts, ethers, waffle } = require('hardhat');
+const { deployContract } = waffle;
+const { BigNumber } = ethers;
 
 const DETAILS =
 	'0x1000000000000000000000000000000000000000000000000000000000000000';
 
 describe('AuctionQueue', () => {
-	// let provider;
 	let wallets;
 	let deployer, bidder, accepter, otherWallet, destination; // wallets
-	let TestERC20, AuctionQueue, Moloch; // artifacts
+	let TestERC20, GuildAuctionQueue, Moloch; // artifacts
 	let token, moloch; // deployed contracts
 	let lockupPeriod;
 

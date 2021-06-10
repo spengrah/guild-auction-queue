@@ -1,9 +1,9 @@
 require('dotenv').config();
-require('@nomiclabs/hardhat-ethers');
 require('@nomiclabs/hardhat-waffle');
 require('solidity-coverage');
 require('hardhat-gas-reporter');
-// require('@nomiclabs/hardhat-etherscan');
+require('hardhat-deploy');
+require('hardhat-deploy-ethers');
 
 const { ETHERSCAN_API_KEY, INFURA_PROJECT_ID, SEED } = process.env;
 
@@ -32,9 +32,6 @@ module.exports = {
 					},
 				},
 			},
-			{ 
-				version: '0.5.3' 
-			},
 		],
 	},
 	defaultNetwork: 'hardhat',
@@ -43,31 +40,39 @@ module.exports = {
 			accounts: {
 				mnemonic: SEED,
 			},
+			chainId: 1337,
+			tags: ['test'],
 		},
 		xdai: {
 			url: 'https://xdai.1hive.org/',
 			accounts: {
 				mnemonic: SEED,
-				count: 1,
 				gasPrice: 1000000000,
 			},
+			tags: ['prod'],
 		},
 		rinkeby: {
 			url: `https://rinkeby.infura.io/v3/${INFURA_PROJECT_ID}`,
 			accounts: {
 				mnemonic: SEED,
-				count: 1,
 			},
+			tags: ['staging'],
 		},
 		mainnet: {
 			url: `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`,
 			accounts: {
 				mnemonic: SEED,
-				count: 1,
 			},
 			gas: 3200000,
 			gasPrice: 150000000000,
+			tags: ['prod'],
 		},
+	},
+	namedAccounts: {
+		deployer: 0,
+		bidder: 1,
+		accepter: 2,
+		destination: 3,
 	},
 	etherscan: {
 		apiKey: ETHERSCAN_API_KEY,
