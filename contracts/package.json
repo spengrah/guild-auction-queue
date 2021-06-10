@@ -1,8 +1,7 @@
 {
-  "name": "auction-queue",
+  "name": "@guild-auction-queue/contracts",
   "version": "0.1",
   "main": "index.js",
-  "repository": "https://github.com/slgraham/auction-queue.git",
   "author": "spengrah <code@spengrah.xyz>",
   "license": "MIT",
   "dependencies": {

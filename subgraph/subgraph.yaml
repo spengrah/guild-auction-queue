@@ -1,0 +1,35 @@
+specVersion: 0.0.2
+schema:
+    file: ./schema.graphql
+dataSources:
+    - kind: ethereum/contract
+      name: GuildAuctionQueue
+      network: rinkeby
+      source:
+          address: '0xBeceC728ff088B358D0b560529814A6132987e6a'
+          abi: GuildAuctionQueue
+      mapping:
+          kind: ethereum/events
+          apiVersion: 0.0.4
+          language: wasm/assemblyscript
+          entities:
+              - Bid
+              - Submitter
+              - Acceptor
+              - BidIncrease
+              - BidWithdraw
+          abis:
+              - name: GuildAuctionQueue
+                file: ./abis/GuildAuctionQueue.json
+          eventHandlers:
+              - event: BidAccepted(address,uint256)
+                handler: handleBidAccepted
+              - event: BidCanceled(uint256)
+                handler: handleBidCanceled
+              - event: BidIncreased(uint256,uint256)
+                handler: handleBidIncreased
+              - event: BidWithdrawn(uint256,uint256)
+                handler: handleBidWithdrawn
+              - event: NewBid(uint256,address,uint256,bytes32,uint256)
+                handler: handleNewBid
+          file: ./src/mapping.ts

@@ -1,0 +1,51 @@
+enum BidStatus {
+	Queued
+	Accepted
+	Canceled
+}
+
+type Bid @entity {
+	id: ID!
+	amount: BigInt!
+	# token: Address!
+	# moloch: Address!
+	submitter: Submitter!
+	accepter: Accepter
+	status: BidStatus!
+	details: Bytes!
+	increases: [BidIncrease!]! @derivedFrom(field: "bid")
+	withdraws: [BidWithdraw!]! @derivedFrom(field: "bid")
+	network: String!
+	createdAt: BigInt! # seconds since epoch
+	createTxHash: Bytes!
+	acceptedAt: BigInt # seconds since epoch
+	acceptTxHash: Bytes
+	canceledAt: BigInt # seconds since epoch
+	cancelTxHash: Bytes
+}
+
+type Submitter @entity {
+	id: ID!
+	bidsSubmitted: [Bid!]! @derivedFrom(field: "submitter")
+}
+
+type Accepter @entity {
+	id: ID!
+	bidsAccepted: [Bid!]! @derivedFrom(field: "accepter")
+}
+
+type BidIncrease @entity {
+	id: ID!
+	bid: Bid!
+	amount: BigInt!
+	createdAt: BigInt!
+	txHash: Bytes!
+}
+
+type BidWithdraw @entity {
+	id: ID!
+	bid: Bid!
+	amount: BigInt!
+	createdAt: BigInt!
+	txHash: Bytes!
+}
