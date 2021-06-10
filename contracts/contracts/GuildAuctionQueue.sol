@@ -52,8 +52,7 @@ contract GuildAuctionQueue is ReentrancyGuard {
         bid.details = _details;
         bid.status = BidStatus.queued;
 
-        uint256 timestamp = block.timestamp;
-        bid.createdAt = timestamp;
+        bid.createdAt = block.timestamp;
         uint256 id = newBidId;
         newBidId++;
 
@@ -62,7 +61,7 @@ contract GuildAuctionQueue is ReentrancyGuard {
             "token transfer failed"
         );
 
-        emit NewBid(_amount, msg.sender, id, _details, timestamp);
+        emit NewBid(_amount, msg.sender, id, _details);
     }
 
     function increaseBid(uint256 _amount, uint256 _id) external nonReentrant {
@@ -162,7 +161,6 @@ contract GuildAuctionQueue is ReentrancyGuard {
         address submitter,
         uint256 id,
         bytes32 details,
-        uint256 createdAt
     );
     event BidIncreased(uint256 newAmount, uint256 id);
     event BidWithdrawn(uint256 newAmount, uint256 id);
