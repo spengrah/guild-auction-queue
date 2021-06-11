@@ -6,8 +6,9 @@ dataSources:
       name: GuildAuctionQueue
       network: rinkeby
       source:
-          address: '0xBeceC728ff088B358D0b560529814A6132987e6a'
+          address: '0x245e5B56C18B18aC2d72F94C5F7bE1D52497A8aD'
           abi: GuildAuctionQueue
+          startBlock: 8742762
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.4

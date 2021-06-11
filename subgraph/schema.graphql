@@ -13,8 +13,8 @@ type Bid @entity {
 	accepter: Accepter
 	status: BidStatus!
 	details: Bytes!
-	increases: [BidIncrease!]! @derivedFrom(field: "bid")
-	withdraws: [BidWithdraw!]! @derivedFrom(field: "bid")
+	increases: [BidIncrease!] @derivedFrom(field: "bid")
+	withdraws: [BidWithdraw!] @derivedFrom(field: "bid")
 	network: String!
 	createdAt: BigInt! # seconds since epoch
 	createTxHash: Bytes!

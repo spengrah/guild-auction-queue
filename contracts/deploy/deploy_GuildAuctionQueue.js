@@ -26,8 +26,12 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 		});
 	} else {
 		// otherwise, use existing contracts
-		token.address = deployArgs.token[chainId];
-		moloch.address = deployArgs.moloch[chainId];
+		token = {
+			address: deployArgs.token[chainId],
+		};
+		moloch = {
+			address: deployArgs.moloch[chainId],
+		};
 	}
 
 	const GuildAuctionQueue = await deploy('GuildAuctionQueue', {
