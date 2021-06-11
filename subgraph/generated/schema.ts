@@ -95,22 +95,38 @@ export class Bid extends Entity {
     this.set("details", Value.fromBytes(value));
   }
 
-  get increases(): Array<string> {
+  get increases(): Array<string> | null {
     let value = this.get("increases");
-    return value.toStringArray();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
   }
 
-  set increases(value: Array<string>) {
-    this.set("increases", Value.fromStringArray(value));
+  set increases(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("increases");
+    } else {
+      this.set("increases", Value.fromStringArray(value as Array<string>));
+    }
   }
 
-  get withdraws(): Array<string> {
+  get withdraws(): Array<string> | null {
     let value = this.get("withdraws");
-    return value.toStringArray();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
   }
 
-  set withdraws(value: Array<string>) {
-    this.set("withdraws", Value.fromStringArray(value));
+  set withdraws(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("withdraws");
+    } else {
+      this.set("withdraws", Value.fromStringArray(value as Array<string>));
+    }
   }
 
   get network(): string {

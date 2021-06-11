@@ -20,15 +20,15 @@ export function handleNewBid(event: NewBid): void {
 
   bid.amount = event.params.amount
   bid.submitter = submitter.id
-  bid.status = "Queued"
+  bid.status = "queued"
   bid.details = event.params.details
   bid.network = dataSource.network()
   bid.createdAt = event.block.timestamp
   bid.createTxHash = event.transaction.hash
 
-  let bidsSubmitted = submitter.bidsSubmitted
-  bidsSubmitted.push(bid.id)
-  submitter.bidsSubmitted = bidsSubmitted
+  // let bidsSubmitted = submitter.bidsSubmitted
+  // bidsSubmitted.push(bid.id)
+  // submitter.bidsSubmitted = bidsSubmitted
 
   bid.save()
   submitter.save()
@@ -36,7 +36,7 @@ export function handleNewBid(event: NewBid): void {
 
 export function handleBidIncreased(event: BidIncreased): void {
   let bid = Bid.load(event.params.id.toHex())
-  let increase = new BidIncrease(event.transaction.hash.toHexString())
+  let increase = new BidIncrease(event.transaction.hash.toHexString()) // TODO maybe this isn't always unique?
 
   increase.amount = event.params.newAmount.minus(bid.amount)
   increase.bid = bid.id
@@ -45,9 +45,9 @@ export function handleBidIncreased(event: BidIncreased): void {
 
   bid.amount = event.params.newAmount
 
-  let increases = bid.increases
-  increases.push(increase.id)
-  bid.increases = increases
+  // let increases = bid.increases
+  // increases.push(increase.id)
+  // bid.increases = increases
 
   bid.save()
   increase.save()
@@ -55,7 +55,7 @@ export function handleBidIncreased(event: BidIncreased): void {
 
 export function handleBidWithdrawn(event: BidWithdrawn): void {
   let bid = Bid.load(event.params.id.toHex())
-  let withdraw = new BidWithdraw(event.transaction.hash.toHexString())
+  let withdraw = new BidWithdraw(event.transaction.hash.toHexString()) // TODO maybe this isn't always unique?
 
   withdraw.amount = bid.amount.minus(event.params.newAmount)
   withdraw.bid = bid.id
@@ -64,9 +64,9 @@ export function handleBidWithdrawn(event: BidWithdrawn): void {
 
   bid.amount = event.params.newAmount
   
-  let withdraws = bid.withdraws
-  bid.withdraws.push(withdraw.id)
-  bid.withdraws = withdraws
+  // let withdraws = bid.withdraws
+  // bid.withdraws.push(withdraw.id)
+  // bid.withdraws = withdraws
 
   bid.save()
   withdraw.save()
@@ -75,20 +75,20 @@ export function handleBidWithdrawn(event: BidWithdrawn): void {
 export function handleBidAccepted(event: BidAccepted): void {
   let bid = Bid.load(event.params.id.toHex())
 
-  let accepterId = event.params.acceptedBy.toHexString()
+  let accepterId = event.params.acceptedBy.toHexString() 
   let accepter = Accepter.load(accepterId)
   if (accepter == null) {
     accepter = new Accepter(accepterId)
   } 
 
   bid.accepter = accepter.id
-  bid.status = "Accepted"
+  bid.status = "accepted"
   bid.acceptedAt = event.block.timestamp
   bid.acceptTxHash = event.transaction.hash
 
-  let bidsAccepted = accepter.bidsAccepted
-  bidsAccepted.push(bid.id)
-  accepter.bidsAccepted = bidsAccepted
+  // let bidsAccepted = accepter.bidsAccepted
+  // bidsAccepted.push(bid.id)
+  // accepter.bidsAccepted = bidsAccepted
 
   bid.save()
   accepter.save()
@@ -100,7 +100,7 @@ export function handleBidAccepted(event: BidAccepted): void {
 export function handleBidCanceled(event: BidCanceled): void {
   let bid = Bid.load(event.params.id.toHex())
 
-  bid.status = "Canceled"
+  bid.status = "canceled"
   bid.canceledAt = event.block.timestamp
   bid.cancelTxHash = event.transaction.hash
 
