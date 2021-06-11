@@ -91,7 +91,7 @@ contract GuildAuctionQueue is ReentrancyGuard {
             "lockupPeriod not over"
         );
 
-        _decreaseBid(_amount, bid);
+        bid.amount -= _amount; // reverts on underflow
 
         require(token.transfer(msg.sender, _amount), "token transfer failed");
 
@@ -124,21 +124,9 @@ contract GuildAuctionQueue is ReentrancyGuard {
 
         bid.status = BidStatus.accepted;
 
-        uint256 amount = bid.amount;
-        bid.amount = 0;
-        require(token.transfer(destination, amount));
+        require(token.transfer(destination, bid.amount));
 
         emit BidAccepted(msg.sender, _id);
-    }
-
-    // -- Internal Functions --
-
-    function _decreaseBid(uint256 _amount, Bid storage _bid)
-        internal
-        returns (bool)
-    {
-        _bid.amount -= _amount; // reverts on underflow (ie if _amount > _bid.amount)
-        return true;
     }
 
     // -- Helper Functions --
