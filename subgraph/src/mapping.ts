@@ -16,18 +16,15 @@ export function handleNewBid(event: NewBid): void {
   let submitter = Submitter.load(submitterId)
   if (submitter == null) {
     submitter = new Submitter(submitterId)
-    submitter.bidsSubmitted = new Array<string>()
   }
 
   bid.amount = event.params.amount
   bid.submitter = submitter.id
-  bid.status = "queued"
+  bid.status = "Queued"
   bid.details = event.params.details
   bid.network = dataSource.network()
   bid.createdAt = event.block.timestamp
   bid.createTxHash = event.transaction.hash
-  bid.increases = new Array<string>()
-  bid.withdraws = new Array<string>()
 
   let bidsSubmitted = submitter.bidsSubmitted
   bidsSubmitted.push(bid.id)
@@ -82,7 +79,6 @@ export function handleBidAccepted(event: BidAccepted): void {
   let accepter = Accepter.load(accepterId)
   if (accepter == null) {
     accepter = new Accepter(accepterId)
-    accepter.bidsAccepted = new Array<string>()
   } 
 
   bid.accepter = accepter.id
@@ -90,7 +86,6 @@ export function handleBidAccepted(event: BidAccepted): void {
   bid.acceptedAt = event.block.timestamp
   bid.acceptTxHash = event.transaction.hash
 
-  
   let bidsAccepted = accepter.bidsAccepted
   bidsAccepted.push(bid.id)
   accepter.bidsAccepted = bidsAccepted
