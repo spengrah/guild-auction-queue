@@ -122,10 +122,6 @@ export class NewBid__Params {
   get details(): Bytes {
     return this._event.parameters[3].value.toBytes();
   }
-
-  get createdAt(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
-  }
 }
 
 export class GuildAuctionQueue__bidsResult {

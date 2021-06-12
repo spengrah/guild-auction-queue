@@ -31,6 +31,6 @@ dataSources:
                 handler: handleBidIncreased
               - event: BidWithdrawn(uint256,uint256)
                 handler: handleBidWithdrawn
-              - event: NewBid(uint256,address,uint256,bytes32,uint256)
+              - event: NewBid(uint256,address,uint256,bytes32)
                 handler: handleNewBid
           file: ./src/mapping.ts

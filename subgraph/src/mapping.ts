@@ -26,17 +26,13 @@ export function handleNewBid(event: NewBid): void {
   bid.createdAt = event.block.timestamp
   bid.createTxHash = event.transaction.hash
 
-  // let bidsSubmitted = submitter.bidsSubmitted
-  // bidsSubmitted.push(bid.id)
-  // submitter.bidsSubmitted = bidsSubmitted
-
   bid.save()
   submitter.save()
 }
 
 export function handleBidIncreased(event: BidIncreased): void {
   let bid = Bid.load(event.params.id.toHex())
-  let increase = new BidIncrease(event.transaction.hash.toHexString()) // TODO maybe this isn't always unique?
+  let increase = new BidIncrease(event.transaction.hash.toHexString() + "-" + event.logIndex.toString())
 
   increase.amount = event.params.newAmount.minus(bid.amount)
   increase.bid = bid.id
@@ -45,17 +41,13 @@ export function handleBidIncreased(event: BidIncreased): void {
 
   bid.amount = event.params.newAmount
 
-  // let increases = bid.increases
-  // increases.push(increase.id)
-  // bid.increases = increases
-
   bid.save()
   increase.save()
 }
 
 export function handleBidWithdrawn(event: BidWithdrawn): void {
   let bid = Bid.load(event.params.id.toHex())
-  let withdraw = new BidWithdraw(event.transaction.hash.toHexString()) // TODO maybe this isn't always unique?
+  let withdraw = new BidWithdraw(event.transaction.hash.toHexString() + "-" + event.logIndex.toString())
 
   withdraw.amount = bid.amount.minus(event.params.newAmount)
   withdraw.bid = bid.id
@@ -63,10 +55,6 @@ export function handleBidWithdrawn(event: BidWithdrawn): void {
   withdraw.txHash = event.transaction.hash
 
   bid.amount = event.params.newAmount
-  
-  // let withdraws = bid.withdraws
-  // bid.withdraws.push(withdraw.id)
-  // bid.withdraws = withdraws
 
   bid.save()
   withdraw.save()
@@ -85,10 +73,6 @@ export function handleBidAccepted(event: BidAccepted): void {
   bid.status = "accepted"
   bid.acceptedAt = event.block.timestamp
   bid.acceptTxHash = event.transaction.hash
-
-  // let bidsAccepted = accepter.bidsAccepted
-  // bidsAccepted.push(bid.id)
-  // accepter.bidsAccepted = bidsAccepted
 
   bid.save()
   accepter.save()
