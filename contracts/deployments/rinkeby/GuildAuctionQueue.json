@@ -1,0 +1,517 @@
+{
+  "address": "0x2923469A33bd2FA2Ab33c877DB81d35A9D8d60C6",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_moloch",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_destination",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_lockupPeriod",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "acceptedBy",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "BidAccepted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "BidCanceled",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "BidIncreased",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "BidWithdrawn",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "submitter",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "details",
+          "type": "bytes32"
+        }
+      ],
+      "name": "NewBid",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "acceptBid",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "bids",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "submitter",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "createdAt",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "details",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "enum GuildAuctionQueue.BidStatus",
+          "name": "status",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelBid",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "destination",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "increaseBid",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "isMember",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lockupPeriod",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "moloch",
+      "outputs": [
+        {
+          "internalType": "contract IMOLOCH",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "newBidId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_details",
+          "type": "bytes32"
+        }
+      ],
+      "name": "submitBid",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "token",
+      "outputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint32",
+          "name": "_id",
+          "type": "uint32"
+        }
+      ],
+      "name": "withdrawBid",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x48375ea4ac044b85aeafcf5b380c732d1bc9b23c1e734b219e1c2405e1e17bef",
+  "receipt": {
+    "to": null,
+    "from": "0xf48928b8d6C04122778aD74C64886D972decA39F",
+    "contractAddress": "0x2923469A33bd2FA2Ab33c877DB81d35A9D8d60C6",
+    "transactionIndex": 15,
+    "gasUsed": "1011337",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xc756c3510191a8fd77109d9b0673feed041eabfda6c6dfec9309437fd5cc660b",
+    "transactionHash": "0x48375ea4ac044b85aeafcf5b380c732d1bc9b23c1e734b219e1c2405e1e17bef",
+    "logs": [],
+    "blockNumber": 8746061,
+    "cumulativeGasUsed": "3895850",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0x982e00b16c313e979c0947b85230907fce45d50e",
+    "0xe189a9c5acfd2e53c4663150b2703b9ffad224ff",
+    "0x03B4E80b96D7F715AA21AABC56F75fecfF89a4DB",
+    120
+  ],
+  "solcInputHash": "dbc9ee9ebc74c710fe68f653c02ae0e2",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_moloch\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_destination\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_lockupPeriod\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"acceptedBy\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"BidAccepted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"BidCanceled\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"newAmount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"BidIncreased\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"newAmount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"BidWithdrawn\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"submitter\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"details\",\"type\":\"bytes32\"}],\"name\":\"NewBid\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_id\",\"type\":\"uint256\"}],\"name\":\"acceptBid\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"bids\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"submitter\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"createdAt\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"details\",\"type\":\"bytes32\"},{\"internalType\":\"enum GuildAuctionQueue.BidStatus\",\"name\":\"status\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_id\",\"type\":\"uint256\"}],\"name\":\"cancelBid\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"destination\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_id\",\"type\":\"uint256\"}],\"name\":\"increaseBid\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"isMember\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"lockupPeriod\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"moloch\",\"outputs\":[{\"internalType\":\"contract IMOLOCH\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"newBidId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"_details\",\"type\":\"bytes32\"}],\"name\":\"submitBid\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"token\",\"outputs\":[{\"internalType\":\"contract IERC20\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"uint32\",\"name\":\"_id\",\"type\":\"uint32\"}],\"name\":\"withdrawBid\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/GuildAuctionQueue.sol\":\"GuildAuctionQueue\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/GuildAuctionQueue.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\nimport \\\"./interfaces/IERC20.sol\\\";\\nimport \\\"./interfaces/IMOLOCH.sol\\\";\\nimport \\\"./ReentrancyGuard.sol\\\";\\n\\ncontract GuildAuctionQueue is ReentrancyGuard {\\n    IERC20 public token;\\n    IMOLOCH public moloch;\\n    address public destination; // where tokens go when bids are accepted\\n    uint256 public lockupPeriod; // period for which bids are locked and cannot be withdrawn, in seconds\\n    uint256 public newBidId; // the id of the next bid to be submitted; starts at 0\\n\\n    // -- Data Models --\\n\\n    mapping(uint256 => Bid) public bids;\\n\\n    enum BidStatus {queued, accepted, cancelled}\\n\\n    struct Bid {\\n        uint256 amount;\\n        address submitter;\\n        uint256 createdAt; // block.timestamp from tx when bid was created\\n        bytes32 details; // details of bid, eg an IPFS hash\\n        BidStatus status;\\n    }\\n\\n    // -- Functions --\\n\\n    constructor(\\n        address _token,\\n        address _moloch,\\n        address _destination,\\n        uint256 _lockupPeriod\\n    ) {\\n        token = IERC20(_token);\\n        moloch = IMOLOCH(_moloch);\\n        destination = _destination;\\n        lockupPeriod = _lockupPeriod;\\n    }\\n\\n    function submitBid(uint256 _amount, bytes32 _details)\\n        external\\n        nonReentrant\\n    {\\n        Bid storage bid = bids[newBidId];\\n\\n        bid.amount = _amount;\\n        bid.submitter = msg.sender;\\n        bid.details = _details;\\n        bid.status = BidStatus.queued;\\n\\n        bid.createdAt = block.timestamp;\\n        uint256 id = newBidId;\\n        newBidId++;\\n\\n        require(\\n            token.transferFrom(msg.sender, address(this), _amount),\\n            \\\"token transfer failed\\\"\\n        );\\n\\n        emit NewBid(_amount, msg.sender, id, _details);\\n    }\\n\\n    function increaseBid(uint256 _amount, uint256 _id) external nonReentrant {\\n        require(_id < newBidId, \\\"invalid bid\\\");\\n        Bid storage bid = bids[_id];\\n        require(bid.status == BidStatus.queued, \\\"bid inactive\\\");\\n        require(bid.submitter == msg.sender, \\\"must be submitter\\\");\\n        bid.amount += _amount;\\n\\n        require(\\n            token.transferFrom(msg.sender, address(this), _amount),\\n            \\\"token transfer failed\\\"\\n        );\\n\\n        emit BidIncreased(bid.amount, _id);\\n    }\\n\\n    function withdrawBid(uint256 _amount, uint32 _id) external nonReentrant {\\n        require(_id < newBidId, \\\"invalid bid\\\");\\n        Bid storage bid = bids[_id];\\n        require(bid.status == BidStatus.queued, \\\"bid inactive\\\");\\n\\n        require(bid.submitter == msg.sender, \\\"must be submitter\\\");\\n\\n        require(\\n            (bid.createdAt + lockupPeriod) < block.timestamp,\\n            \\\"lockupPeriod not over\\\"\\n        );\\n\\n        bid.amount -= _amount; // reverts on underflow\\n\\n        require(token.transfer(msg.sender, _amount), \\\"token transfer failed\\\");\\n\\n        emit BidWithdrawn(bid.amount, _id);\\n    }\\n\\n    function cancelBid(uint256 _id) external nonReentrant {\\n        require(_id < newBidId, \\\"invalid bid\\\");\\n        Bid storage bid = bids[_id];\\n        require(bid.status == BidStatus.queued, \\\"bid inactive\\\");\\n\\n        require(bid.submitter == msg.sender, \\\"must be submitter\\\");\\n\\n        require(\\n            (bid.createdAt + lockupPeriod) < block.timestamp,\\n            \\\"lockupPeriod not over\\\"\\n        );\\n\\n        bid.status = BidStatus.cancelled;\\n\\n        require(token.transfer(msg.sender, bid.amount));\\n\\n        emit BidCanceled(_id);\\n    }\\n\\n    function acceptBid(uint256 _id) external memberOnly nonReentrant {\\n        require(_id < newBidId, \\\"invalid bid\\\");\\n        Bid storage bid = bids[_id];\\n        require(bid.status == BidStatus.queued, \\\"bid inactive\\\");\\n\\n        bid.status = BidStatus.accepted;\\n\\n        require(token.transfer(destination, bid.amount));\\n\\n        emit BidAccepted(msg.sender, _id);\\n    }\\n\\n    // -- Helper Functions --\\n\\n    function isMember(address user) public view returns (bool) {\\n        (, uint256 shares, , , , ) = moloch.members(user);\\n        return shares > 0;\\n    }\\n\\n    // -- Modifiers --\\n    modifier memberOnly() {\\n        require(isMember(msg.sender), \\\"not member of moloch\\\");\\n        _;\\n    }\\n\\n    // -- Events --\\n\\n    event NewBid(\\n        uint256 amount,\\n        address submitter,\\n        uint256 id,\\n        bytes32 details\\n    );\\n    event BidIncreased(uint256 newAmount, uint256 id);\\n    event BidWithdrawn(uint256 newAmount, uint256 id);\\n    event BidCanceled(uint256 id);\\n    event BidAccepted(address acceptedBy, uint256 id);\\n}\\n\",\"keccak256\":\"0x262248de58df126770e3ea8256e867493a7f4018e5dc13970a241c6928720982\",\"license\":\"MIT\"},\"contracts/ReentrancyGuard.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\n/**\\n * @dev Contract module that helps prevent reentrant calls to a function.\\n *\\n * Inheriting from `ReentrancyGuard` will make the {nonReentrant} modifier\\n * available, which can be applied to functions to make sure there are no nested\\n * (reentrant) calls to them.\\n *\\n * Note that because there is a single `nonReentrant` guard, functions marked as\\n * `nonReentrant` may not call one another. This can be worked around by making\\n * those functions `private`, and then adding `external` `nonReentrant` entry\\n * points to them.\\n *\\n * TIP: If you would like to learn more about reentrancy and alternative ways\\n * to protect against it, check out our blog post\\n * https://blog.openzeppelin.com/reentrancy-after-istanbul/[Reentrancy After Istanbul].\\n */\\nabstract contract ReentrancyGuard {\\n    // Booleans are more expensive than uint256 or any type that takes up a full\\n    // word because each write operation emits an extra SLOAD to first read the\\n    // slot's contents, replace the bits taken up by the boolean, and then write\\n    // back. This is the compiler's defense against contract upgrades and\\n    // pointer aliasing, and it cannot be disabled.\\n\\n    // The values being non-zero value makes deployment a bit more expensive,\\n    // but in exchange the refund on every call to nonReentrant will be lower in\\n    // amount. Since refunds are capped to a percentage of the total\\n    // transaction's gas, it is best to keep them low in cases like this one, to\\n    // increase the likelihood of the full refund coming into effect.\\n    uint256 private constant _NOT_ENTERED = 1;\\n    uint256 private constant _ENTERED = 2;\\n\\n    uint256 private _status;\\n\\n    constructor() {\\n        _status = _NOT_ENTERED;\\n    }\\n\\n    /**\\n     * @dev Prevents a contract from calling itself, directly or indirectly.\\n     * Calling a `nonReentrant` function from another `nonReentrant`\\n     * function is not supported. It is possible to prevent this from happening\\n     * by making the `nonReentrant` function external, and make it call a\\n     * `private` function that does the actual work.\\n     */\\n    modifier nonReentrant() {\\n        // On the first call to nonReentrant, _notEntered will be true\\n        require(_status != _ENTERED, \\\"ReentrancyGuard: reentrant call\\\");\\n\\n        // Any calls to nonReentrant after this point will fail\\n        _status = _ENTERED;\\n\\n        _;\\n\\n        // By storing the original value once again, a refund is triggered (see\\n        // https://eips.ethereum.org/EIPS/eip-2200)\\n        _status = _NOT_ENTERED;\\n    }\\n}\\n\",\"keccak256\":\"0x842ccf9a6cd33e17b7acef8372ca42090755217b358fe0c44c98e951ea549d3a\",\"license\":\"MIT\"},\"contracts/interfaces/IERC20.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\n/**\\n * @dev Interface of the ERC20 standard as defined in the EIP.\\n */\\ninterface IERC20 {\\n    /**\\n     * @dev Returns the amount of tokens in existence.\\n     */\\n    function totalSupply() external view returns (uint256);\\n\\n    /**\\n     * @dev Returns the amount of tokens owned by `account`.\\n     */\\n    function balanceOf(address account) external view returns (uint256);\\n\\n    /**\\n     * @dev Moves `amount` tokens from the caller's account to `recipient`.\\n     *\\n     * Returns a boolean value indicating whether the operation succeeded.\\n     *\\n     * Emits a {Transfer} event.\\n     */\\n    function transfer(address recipient, uint256 amount) external returns (bool);\\n\\n    /**\\n     * @dev Returns the remaining number of tokens that `spender` will be\\n     * allowed to spend on behalf of `owner` through {transferFrom}. This is\\n     * zero by default.\\n     *\\n     * This value changes when {approve} or {transferFrom} are called.\\n     */\\n    function allowance(address owner, address spender) external view returns (uint256);\\n\\n    /**\\n     * @dev Sets `amount` as the allowance of `spender` over the caller's tokens.\\n     *\\n     * Returns a boolean value indicating whether the operation succeeded.\\n     *\\n     * IMPORTANT: Beware that changing an allowance with this method brings the risk\\n     * that someone may use both the old and the new allowance by unfortunate\\n     * transaction ordering. One possible solution to mitigate this race\\n     * condition is to first reduce the spender's allowance to 0 and set the\\n     * desired value afterwards:\\n     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\\n     *\\n     * Emits an {Approval} event.\\n     */\\n    function approve(address spender, uint256 amount) external returns (bool);\\n\\n    /**\\n     * @dev Moves `amount` tokens from `sender` to `recipient` using the\\n     * allowance mechanism. `amount` is then deducted from the caller's\\n     * allowance.\\n     *\\n     * Returns a boolean value indicating whether the operation succeeded.\\n     *\\n     * Emits a {Transfer} event.\\n     */\\n    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);\\n\\n    /**\\n     * @dev Emitted when `value` tokens are moved from one account (`from`) to\\n     * another (`to`).\\n     *\\n     * Note that `value` may be zero.\\n     */\\n    event Transfer(address indexed from, address indexed to, uint256 value);\\n\\n    /**\\n     * @dev Emitted when the allowance of a `spender` for an `owner` is set by\\n     * a call to {approve}. `value` is the new allowance.\\n     */\\n    event Approval(address indexed owner, address indexed spender, uint256 value);\\n}\\n\",\"keccak256\":\"0xf8e8d118a7a8b2e134181f7da655f6266aa3a0f9134b2605747139fcb0c5d835\",\"license\":\"MIT\"},\"contracts/interfaces/IMOLOCH.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\ninterface IMOLOCH {\\n    // brief interface for moloch dao v2\\n\\n    function depositToken() external view returns (address);\\n\\n    function tokenWhitelist(address token) external view returns (bool);\\n\\n    function getProposalFlags(uint256 proposalId)\\n        external\\n        view\\n        returns (bool[6] memory);\\n\\n    function members(address user)\\n        external\\n        view\\n        returns (\\n            address,\\n            uint256,\\n            uint256,\\n            bool,\\n            uint256,\\n            uint256\\n        );\\n\\n    function userTokenBalances(address user, address token)\\n        external\\n        view\\n        returns (uint256);\\n\\n    function cancelProposal(uint256 proposalId) external;\\n\\n    function submitProposal(\\n        address applicant,\\n        uint256 sharesRequested,\\n        uint256 lootRequested,\\n        uint256 tributeOffered,\\n        address tributeToken,\\n        uint256 paymentRequested,\\n        address paymentToken,\\n        string calldata details\\n    ) external returns (uint256);\\n\\n    function withdrawBalance(address token, uint256 amount) external;\\n}\\n\",\"keccak256\":\"0x26ae9b85b0c90598cefd21f8e0597fd1d8c4d6c327e2b68e13b005321198a3e1\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5060405161102c38038061102c83398101604081905261002f91610095565b6001600081905580546001600160a01b03199081166001600160a01b03968716179091556002805482169486169490941790935560038054909316919093161790556004556100df565b80516001600160a01b038116811461009057600080fd5b919050565b600080600080608085870312156100aa578384fd5b6100b385610079565b93506100c160208601610079565b92506100cf60408601610079565b6060959095015193969295505050565b610f3e806100ee6000396000f3fe608060405234801561001057600080fd5b50600436106100b45760003560e01c80639703ef35116100715780639703ef351461014b578063a230c5241461015e578063b269681d1461017e578063ee947a7c14610186578063f344be461461018e578063fc0c546a146101a1576100b4565b806319fcfab1146100b95780631dd92a66146100ce5780632b1fd58a146100e15780634423c5f1146100f4578063623d9ac9146101215780637ef7e2e614610136575b600080fd5b6100cc6100c7366004610c02565b6101a9565b005b6100cc6100dc366004610c02565b61031b565b6100cc6100ef366004610bea565b6104e1565b610107610102366004610bea565b610684565b604051610118959493929190610e1c565b60405180910390f35b6101296106c0565b6040516101189190610c5a565b61013e6106cf565b6040516101189190610def565b6100cc610159366004610bea565b6106d5565b61017161016c366004610b53565b610899565b6040516101189190610cab565b61012961092f565b61013e61093e565b6100cc61019c366004610c23565b610944565b610129610b34565b600260005414156101d55760405162461bcd60e51b81526004016101cc90610db8565b60405180910390fd5b600260008181556005805482526006602052604082208581556001810180546001600160a01b031916331790556003810185905560048101805460ff19169055429381019390935580549182919061022c83610ebf565b90915550506001546040516323b872dd60e01b81526001600160a01b03909116906323b872dd9061026590339030908990600401610c6e565b602060405180830381600087803b15801561027f57600080fd5b505af1158015610293573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906102b79190610bd0565b6102d35760405162461bcd60e51b81526004016101cc90610d89565b7fe6dcca7407be6b00aeaa48976c2ae152e8d7cc8a16074825c3546be778eda6fa843383866040516103089493929190610df8565b60405180910390a1505060016000555050565b6002600054141561033e5760405162461bcd60e51b81526004016101cc90610db8565b600260005560055481106103645760405162461bcd60e51b81526004016101cc90610cb6565b600081815260066020526040812090600482015460ff16600281111561039a57634e487b7160e01b600052602160045260246000fd5b146103b75760405162461bcd60e51b81526004016101cc90610d63565b60018101546001600160a01b031633146103e35760405162461bcd60e51b81526004016101cc90610d38565b828160000160008282546103f79190610e90565b90915550506001546040516323b872dd60e01b81526001600160a01b03909116906323b872dd9061043090339030908890600401610c6e565b602060405180830381600087803b15801561044a57600080fd5b505af115801561045e573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104829190610bd0565b61049e5760405162461bcd60e51b81526004016101cc90610d89565b80546040517eaf2e2a3e39505661009eb9f5ad582e286bfa100a4a613d3889d64546894234916104cf918590610e6e565b60405180910390a15050600160005550565b6104ea33610899565b6105065760405162461bcd60e51b81526004016101cc90610d0a565b600260005414156105295760405162461bcd60e51b81526004016101cc90610db8565b6002600055600554811061054f5760405162461bcd60e51b81526004016101cc90610cb6565b600081815260066020526040812090600482015460ff16600281111561058557634e487b7160e01b600052602160045260246000fd5b146105a25760405162461bcd60e51b81526004016101cc90610d63565b6004818101805460ff1916600190811790915554600354835460405163a9059cbb60e01b81526001600160a01b039384169463a9059cbb946105e79416929101610c92565b602060405180830381600087803b15801561060157600080fd5b505af1158015610615573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906106399190610bd0565b61064257600080fd5b7f68113ca7b748f7d17637d79856900bc9336b88166e726bc9b55c62a39408b4073383604051610673929190610c92565b60405180910390a150506001600055565b6006602052600090815260409020805460018201546002830154600384015460049094015492936001600160a01b039092169290919060ff1685565b6002546001600160a01b031681565b60055481565b600260005414156106f85760405162461bcd60e51b81526004016101cc90610db8565b6002600055600554811061071e5760405162461bcd60e51b81526004016101cc90610cb6565b600081815260066020526040812090600482015460ff16600281111561075457634e487b7160e01b600052602160045260246000fd5b146107715760405162461bcd60e51b81526004016101cc90610d63565b60018101546001600160a01b0316331461079d5760405162461bcd60e51b81526004016101cc90610d38565b4260045482600201546107b09190610e90565b106107cd5760405162461bcd60e51b81526004016101cc90610cdb565b6004818101805460ff19166002179055600154825460405163a9059cbb60e01b81526001600160a01b039092169263a9059cbb9261080f923392909101610c92565b602060405180830381600087803b15801561082957600080fd5b505af115801561083d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108619190610bd0565b61086a57600080fd5b7ff72c9cb76aa633bc9310fa98738d474339fdf2f23dfac70ccbd65e593f6654df826040516106739190610def565b60025460405163022b92c360e21b815260009182916001600160a01b03909116906308ae4b0c906108ce908690600401610c5a565b60c06040518083038186803b1580156108e657600080fd5b505afa1580156108fa573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061091e9190610b76565b50505090151593505050505b919050565b6003546001600160a01b031681565b60045481565b600260005414156109675760405162461bcd60e51b81526004016101cc90610db8565b600260005560055463ffffffff8216106109935760405162461bcd60e51b81526004016101cc90610cb6565b63ffffffff8116600090815260066020526040812090600482015460ff1660028111156109d057634e487b7160e01b600052602160045260246000fd5b146109ed5760405162461bcd60e51b81526004016101cc90610d63565b60018101546001600160a01b03163314610a195760405162461bcd60e51b81526004016101cc90610d38565b426004548260020154610a2c9190610e90565b10610a495760405162461bcd60e51b81526004016101cc90610cdb565b82816000016000828254610a5d9190610ea8565b909155505060015460405163a9059cbb60e01b81526001600160a01b039091169063a9059cbb90610a949033908790600401610c92565b602060405180830381600087803b158015610aae57600080fd5b505af1158015610ac2573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610ae69190610bd0565b610b025760405162461bcd60e51b81526004016101cc90610d89565b80546040517f6415d97b7a9df23899954c482911f3fc2cb8afff4b6b15e788859e1307de227a916104cf918590610e7c565b6001546001600160a01b031681565b8051801515811461092a57600080fd5b600060208284031215610b64578081fd5b8135610b6f81610ef0565b9392505050565b60008060008060008060c08789031215610b8e578182fd5b8651610b9981610ef0565b6020880151604089015191975095509350610bb660608801610b43565b92506080870151915060a087015190509295509295509295565b600060208284031215610be1578081fd5b610b6f82610b43565b600060208284031215610bfb578081fd5b5035919050565b60008060408385031215610c14578182fd5b50508035926020909101359150565b60008060408385031215610c35578182fd5b82359150602083013563ffffffff81168114610c4f578182fd5b809150509250929050565b6001600160a01b0391909116815260200190565b6001600160a01b039384168152919092166020820152604081019190915260600190565b6001600160a01b03929092168252602082015260400190565b901515815260200190565b6020808252600b908201526a1a5b9d985b1a5908189a5960aa1b604082015260600190565b6020808252601590820152743637b1b5bab82832b934b7b2103737ba1037bb32b960591b604082015260600190565b6020808252601490820152730dcdee840dacadac4cae440decc40daded8dec6d60631b604082015260600190565b60208082526011908201527036bab9ba1031329039bab136b4ba3a32b960791b604082015260600190565b6020808252600c908201526b62696420696e61637469766560a01b604082015260600190565b6020808252601590820152741d1bdad95b881d1c985b9cd9995c8819985a5b1959605a1b604082015260600190565b6020808252601f908201527f5265656e7472616e637947756172643a207265656e7472616e742063616c6c00604082015260600190565b90815260200190565b9384526001600160a01b039290921660208401526040830152606082015260800190565b8581526001600160a01b0385166020820152604081018490526060810183905260a0810160038310610e5e57634e487b7160e01b600052602160045260246000fd5b8260808301529695505050505050565b918252602082015260400190565b91825263ffffffff16602082015260400190565b60008219821115610ea357610ea3610eda565b500190565b600082821015610eba57610eba610eda565b500390565b6000600019821415610ed357610ed3610eda565b5060010190565b634e487b7160e01b600052601160045260246000fd5b6001600160a01b0381168114610f0557600080fd5b5056fea26469706673582212201a8a47fabb6d0e8fd813dc9ac85eddc3d1ca2fac1c8aad692c5bdbc40f94506364736f6c63430008000033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100b45760003560e01c80639703ef35116100715780639703ef351461014b578063a230c5241461015e578063b269681d1461017e578063ee947a7c14610186578063f344be461461018e578063fc0c546a146101a1576100b4565b806319fcfab1146100b95780631dd92a66146100ce5780632b1fd58a146100e15780634423c5f1146100f4578063623d9ac9146101215780637ef7e2e614610136575b600080fd5b6100cc6100c7366004610c02565b6101a9565b005b6100cc6100dc366004610c02565b61031b565b6100cc6100ef366004610bea565b6104e1565b610107610102366004610bea565b610684565b604051610118959493929190610e1c565b60405180910390f35b6101296106c0565b6040516101189190610c5a565b61013e6106cf565b6040516101189190610def565b6100cc610159366004610bea565b6106d5565b61017161016c366004610b53565b610899565b6040516101189190610cab565b61012961092f565b61013e61093e565b6100cc61019c366004610c23565b610944565b610129610b34565b600260005414156101d55760405162461bcd60e51b81526004016101cc90610db8565b60405180910390fd5b600260008181556005805482526006602052604082208581556001810180546001600160a01b031916331790556003810185905560048101805460ff19169055429381019390935580549182919061022c83610ebf565b90915550506001546040516323b872dd60e01b81526001600160a01b03909116906323b872dd9061026590339030908990600401610c6e565b602060405180830381600087803b15801561027f57600080fd5b505af1158015610293573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906102b79190610bd0565b6102d35760405162461bcd60e51b81526004016101cc90610d89565b7fe6dcca7407be6b00aeaa48976c2ae152e8d7cc8a16074825c3546be778eda6fa843383866040516103089493929190610df8565b60405180910390a1505060016000555050565b6002600054141561033e5760405162461bcd60e51b81526004016101cc90610db8565b600260005560055481106103645760405162461bcd60e51b81526004016101cc90610cb6565b600081815260066020526040812090600482015460ff16600281111561039a57634e487b7160e01b600052602160045260246000fd5b146103b75760405162461bcd60e51b81526004016101cc90610d63565b60018101546001600160a01b031633146103e35760405162461bcd60e51b81526004016101cc90610d38565b828160000160008282546103f79190610e90565b90915550506001546040516323b872dd60e01b81526001600160a01b03909116906323b872dd9061043090339030908890600401610c6e565b602060405180830381600087803b15801561044a57600080fd5b505af115801561045e573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104829190610bd0565b61049e5760405162461bcd60e51b81526004016101cc90610d89565b80546040517eaf2e2a3e39505661009eb9f5ad582e286bfa100a4a613d3889d64546894234916104cf918590610e6e565b60405180910390a15050600160005550565b6104ea33610899565b6105065760405162461bcd60e51b81526004016101cc90610d0a565b600260005414156105295760405162461bcd60e51b81526004016101cc90610db8565b6002600055600554811061054f5760405162461bcd60e51b81526004016101cc90610cb6565b600081815260066020526040812090600482015460ff16600281111561058557634e487b7160e01b600052602160045260246000fd5b146105a25760405162461bcd60e51b81526004016101cc90610d63565b6004818101805460ff1916600190811790915554600354835460405163a9059cbb60e01b81526001600160a01b039384169463a9059cbb946105e79416929101610c92565b602060405180830381600087803b15801561060157600080fd5b505af1158015610615573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906106399190610bd0565b61064257600080fd5b7f68113ca7b748f7d17637d79856900bc9336b88166e726bc9b55c62a39408b4073383604051610673929190610c92565b60405180910390a150506001600055565b6006602052600090815260409020805460018201546002830154600384015460049094015492936001600160a01b039092169290919060ff1685565b6002546001600160a01b031681565b60055481565b600260005414156106f85760405162461bcd60e51b81526004016101cc90610db8565b6002600055600554811061071e5760405162461bcd60e51b81526004016101cc90610cb6565b600081815260066020526040812090600482015460ff16600281111561075457634e487b7160e01b600052602160045260246000fd5b146107715760405162461bcd60e51b81526004016101cc90610d63565b60018101546001600160a01b0316331461079d5760405162461bcd60e51b81526004016101cc90610d38565b4260045482600201546107b09190610e90565b106107cd5760405162461bcd60e51b81526004016101cc90610cdb565b6004818101805460ff19166002179055600154825460405163a9059cbb60e01b81526001600160a01b039092169263a9059cbb9261080f923392909101610c92565b602060405180830381600087803b15801561082957600080fd5b505af115801561083d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108619190610bd0565b61086a57600080fd5b7ff72c9cb76aa633bc9310fa98738d474339fdf2f23dfac70ccbd65e593f6654df826040516106739190610def565b60025460405163022b92c360e21b815260009182916001600160a01b03909116906308ae4b0c906108ce908690600401610c5a565b60c06040518083038186803b1580156108e657600080fd5b505afa1580156108fa573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061091e9190610b76565b50505090151593505050505b919050565b6003546001600160a01b031681565b60045481565b600260005414156109675760405162461bcd60e51b81526004016101cc90610db8565b600260005560055463ffffffff8216106109935760405162461bcd60e51b81526004016101cc90610cb6565b63ffffffff8116600090815260066020526040812090600482015460ff1660028111156109d057634e487b7160e01b600052602160045260246000fd5b146109ed5760405162461bcd60e51b81526004016101cc90610d63565b60018101546001600160a01b03163314610a195760405162461bcd60e51b81526004016101cc90610d38565b426004548260020154610a2c9190610e90565b10610a495760405162461bcd60e51b81526004016101cc90610cdb565b82816000016000828254610a5d9190610ea8565b909155505060015460405163a9059cbb60e01b81526001600160a01b039091169063a9059cbb90610a949033908790600401610c92565b602060405180830381600087803b158015610aae57600080fd5b505af1158015610ac2573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610ae69190610bd0565b610b025760405162461bcd60e51b81526004016101cc90610d89565b80546040517f6415d97b7a9df23899954c482911f3fc2cb8afff4b6b15e788859e1307de227a916104cf918590610e7c565b6001546001600160a01b031681565b8051801515811461092a57600080fd5b600060208284031215610b64578081fd5b8135610b6f81610ef0565b9392505050565b60008060008060008060c08789031215610b8e578182fd5b8651610b9981610ef0565b6020880151604089015191975095509350610bb660608801610b43565b92506080870151915060a087015190509295509295509295565b600060208284031215610be1578081fd5b610b6f82610b43565b600060208284031215610bfb578081fd5b5035919050565b60008060408385031215610c14578182fd5b50508035926020909101359150565b60008060408385031215610c35578182fd5b82359150602083013563ffffffff81168114610c4f578182fd5b809150509250929050565b6001600160a01b0391909116815260200190565b6001600160a01b039384168152919092166020820152604081019190915260600190565b6001600160a01b03929092168252602082015260400190565b901515815260200190565b6020808252600b908201526a1a5b9d985b1a5908189a5960aa1b604082015260600190565b6020808252601590820152743637b1b5bab82832b934b7b2103737ba1037bb32b960591b604082015260600190565b6020808252601490820152730dcdee840dacadac4cae440decc40daded8dec6d60631b604082015260600190565b60208082526011908201527036bab9ba1031329039bab136b4ba3a32b960791b604082015260600190565b6020808252600c908201526b62696420696e61637469766560a01b604082015260600190565b6020808252601590820152741d1bdad95b881d1c985b9cd9995c8819985a5b1959605a1b604082015260600190565b6020808252601f908201527f5265656e7472616e637947756172643a207265656e7472616e742063616c6c00604082015260600190565b90815260200190565b9384526001600160a01b039290921660208401526040830152606082015260800190565b8581526001600160a01b0385166020820152604081018490526060810183905260a0810160038310610e5e57634e487b7160e01b600052602160045260246000fd5b8260808301529695505050505050565b918252602082015260400190565b91825263ffffffff16602082015260400190565b60008219821115610ea357610ea3610eda565b500190565b600082821015610eba57610eba610eda565b500390565b6000600019821415610ed357610ed3610eda565b5060010190565b634e487b7160e01b600052601160045260246000fd5b6001600160a01b0381168114610f0557600080fd5b5056fea26469706673582212201a8a47fabb6d0e8fd813dc9ac85eddc3d1ca2fac1c8aad692c5bdbc40f94506364736f6c63430008000033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 497,
+        "contract": "contracts/GuildAuctionQueue.sol:GuildAuctionQueue",
+        "label": "_status",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 9,
+        "contract": "contracts/GuildAuctionQueue.sol:GuildAuctionQueue",
+        "label": "token",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_contract(IERC20)604"
+      },
+      {
+        "astId": 12,
+        "contract": "contracts/GuildAuctionQueue.sol:GuildAuctionQueue",
+        "label": "moloch",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_contract(IMOLOCH)687"
+      },
+      {
+        "astId": 14,
+        "contract": "contracts/GuildAuctionQueue.sol:GuildAuctionQueue",
+        "label": "destination",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_address"
+      },
+      {
+        "astId": 16,
+        "contract": "contracts/GuildAuctionQueue.sol:GuildAuctionQueue",
+        "label": "lockupPeriod",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 18,
+        "contract": "contracts/GuildAuctionQueue.sol:GuildAuctionQueue",
+        "label": "newBidId",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 23,
+        "contract": "contracts/GuildAuctionQueue.sol:GuildAuctionQueue",
+        "label": "bids",
+        "offset": 0,
+        "slot": "6",
+        "type": "t_mapping(t_uint256,t_struct(Bid)39_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_bytes32": {
+        "encoding": "inplace",
+        "label": "bytes32",
+        "numberOfBytes": "32"
+      },
+      "t_contract(IERC20)604": {
+        "encoding": "inplace",
+        "label": "contract IERC20",
+        "numberOfBytes": "20"
+      },
+      "t_contract(IMOLOCH)687": {
+        "encoding": "inplace",
+        "label": "contract IMOLOCH",
+        "numberOfBytes": "20"
+      },
+      "t_enum(BidStatus)27": {
+        "encoding": "inplace",
+        "label": "enum GuildAuctionQueue.BidStatus",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_uint256,t_struct(Bid)39_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct GuildAuctionQueue.Bid)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Bid)39_storage"
+      },
+      "t_struct(Bid)39_storage": {
+        "encoding": "inplace",
+        "label": "struct GuildAuctionQueue.Bid",
+        "members": [
+          {
+            "astId": 29,
+            "contract": "contracts/GuildAuctionQueue.sol:GuildAuctionQueue",
+            "label": "amount",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 31,
+            "contract": "contracts/GuildAuctionQueue.sol:GuildAuctionQueue",
+            "label": "submitter",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address"
+          },
+          {
+            "astId": 33,
+            "contract": "contracts/GuildAuctionQueue.sol:GuildAuctionQueue",
+            "label": "createdAt",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 35,
+            "contract": "contracts/GuildAuctionQueue.sol:GuildAuctionQueue",
+            "label": "details",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_bytes32"
+          },
+          {
+            "astId": 38,
+            "contract": "contracts/GuildAuctionQueue.sol:GuildAuctionQueue",
+            "label": "status",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_enum(BidStatus)27"
+          }
+        ],
+        "numberOfBytes": "160"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

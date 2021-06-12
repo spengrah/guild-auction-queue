@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "contracts/interfaces/IERC20.sol";
-import "contracts/interfaces/IMOLOCH.sol";
-import "contracts/ReentrancyGuard.sol";
+import "./interfaces/IERC20.sol";
+import "./interfaces/IMOLOCH.sol";
+import "./ReentrancyGuard.sol";
 
 contract GuildAuctionQueue is ReentrancyGuard {
     IERC20 public token;
@@ -52,8 +52,7 @@ contract GuildAuctionQueue is ReentrancyGuard {
         bid.details = _details;
         bid.status = BidStatus.queued;
 
-        uint256 timestamp = block.timestamp;
-        bid.createdAt = timestamp;
+        bid.createdAt = block.timestamp;
         uint256 id = newBidId;
         newBidId++;
 
@@ -62,7 +61,7 @@ contract GuildAuctionQueue is ReentrancyGuard {
             "token transfer failed"
         );
 
-        emit NewBid(_amount, msg.sender, id, _details, timestamp);
+        emit NewBid(_amount, msg.sender, id, _details);
     }
 
     function increaseBid(uint256 _amount, uint256 _id) external nonReentrant {
@@ -92,7 +91,7 @@ contract GuildAuctionQueue is ReentrancyGuard {
             "lockupPeriod not over"
         );
 
-        _decreaseBid(_amount, bid);
+        bid.amount -= _amount; // reverts on underflow
 
         require(token.transfer(msg.sender, _amount), "token transfer failed");
 
@@ -125,21 +124,9 @@ contract GuildAuctionQueue is ReentrancyGuard {
 
         bid.status = BidStatus.accepted;
 
-        uint256 amount = bid.amount;
-        bid.amount = 0;
-        require(token.transfer(destination, amount));
+        require(token.transfer(destination, bid.amount));
 
         emit BidAccepted(msg.sender, _id);
-    }
-
-    // -- Internal Functions --
-
-    function _decreaseBid(uint256 _amount, Bid storage _bid)
-        internal
-        returns (bool)
-    {
-        _bid.amount -= _amount; // reverts on underflow (ie if _amount > _bid.amount)
-        return true;
     }
 
     // -- Helper Functions --
@@ -161,8 +148,7 @@ contract GuildAuctionQueue is ReentrancyGuard {
         uint256 amount,
         address submitter,
         uint256 id,
-        bytes32 details,
-        uint256 createdAt
+        bytes32 details
     );
     event BidIncreased(uint256 newAmount, uint256 id);
     event BidWithdrawn(uint256 newAmount, uint256 id);
