@@ -45,6 +45,11 @@ contract GuildAuctionQueue is ReentrancyGuard {
         external
         nonReentrant
     {
+        require(
+            token.transferFrom(msg.sender, address(this), _amount),
+            "token transfer failed"
+        );
+
         Bid storage bid = bids[newBidId];
 
         bid.amount = _amount;
@@ -56,11 +61,6 @@ contract GuildAuctionQueue is ReentrancyGuard {
         uint256 id = newBidId;
         newBidId++;
 
-        require(
-            token.transferFrom(msg.sender, address(this), _amount),
-            "token transfer failed"
-        );
-
         emit NewBid(_amount, msg.sender, id, _details);
     }
 
@@ -69,12 +69,13 @@ contract GuildAuctionQueue is ReentrancyGuard {
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
         require(bid.submitter == msg.sender, "must be submitter");
-        bid.amount += _amount;
 
         require(
             token.transferFrom(msg.sender, address(this), _amount),
             "token transfer failed"
         );
+
+        bid.amount += _amount;
 
         emit BidIncreased(bid.amount, _id);
     }

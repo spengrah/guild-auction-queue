@@ -1,7 +1,7 @@
-const { expect } = require('chai');
-const { ethers, waffle, deployments, getChainId } = require('hardhat');
-const { BigNumber, getContract, getSigners } = ethers;
-const { lockupPeriod } = require('../deploy/args.json');
+const {expect} = require('chai');
+const {ethers, waffle, deployments, getChainId} = require('hardhat');
+const {BigNumber, getContract, getSigners} = ethers;
+const {lockupPeriod} = require('../deploy/args.json');
 
 async function setup() {
 	await deployments.fixture(['GuildAuctionQueue']);
@@ -98,12 +98,10 @@ describe('AuctionQueue', () => {
 
 		it('emits NewBid event', async () => {
 			receipt = await queue_bidder.submitBid(BigNumber.from(75), DETAILS);
-			block = await bidder.provider.getBlock(receipt.blockNumber);
-			time = block.timestamp;
 
 			expect(receipt)
 				.to.emit(queue_bidder, 'NewBid')
-				.withArgs(BigNumber.from(75), bidder.address, 0, DETAILS, time);
+				.withArgs(BigNumber.from(75), bidder.address, 0, DETAILS);
 		});
 	});
 
