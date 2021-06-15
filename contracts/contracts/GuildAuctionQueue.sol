@@ -4,9 +4,10 @@ pragma solidity ^0.8.0;
 
 import "./interfaces/IERC20.sol";
 import "./interfaces/IMOLOCH.sol";
-import "./ReentrancyGuard.sol";
+import "./oz/ReentrancyGuard.sol";
+import "./oz/Initializable.sol";
 
-contract GuildAuctionQueue is ReentrancyGuard {
+contract GuildAuctionQueue is ReentrancyGuard, Initializable {
     IERC20 public token;
     IMOLOCH public moloch;
     address public destination; // where tokens go when bids are accepted
@@ -29,12 +30,12 @@ contract GuildAuctionQueue is ReentrancyGuard {
 
     // -- Functions --
 
-    constructor(
+    function init(
         address _token,
         address _moloch,
         address _destination,
         uint256 _lockupPeriod
-    ) {
+    ) external initializer {
         token = IERC20(_token);
         moloch = IMOLOCH(_moloch);
         destination = _destination;

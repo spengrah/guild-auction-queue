@@ -1,0 +1,388 @@
+{
+  "address": "0x53A85e88E8Ae11853DA367Cb2209e04000E28440",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "acceptedBy",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "BidAccepted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "BidCanceled",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "BidIncreased",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "BidWithdrawn",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "submitter",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "details",
+          "type": "bytes32"
+        }
+      ],
+      "name": "NewBid",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "acceptBid",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "bids",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "submitter",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "createdAt",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "details",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "enum GuildAuctionQueue.BidStatus",
+          "name": "status",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelBid",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "destination",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "increaseBid",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_moloch",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_destination",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_lockupPeriod",
+          "type": "uint256"
+        }
+      ],
+      "name": "init",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "isMember",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lockupPeriod",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "moloch",
+      "outputs": [
+        {
+          "internalType": "contract IMOLOCH",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "newBidId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_details",
+          "type": "bytes32"
+        }
+      ],
+      "name": "submitBid",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "token",
+      "outputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint32",
+          "name": "_id",
+          "type": "uint32"
+        }
+      ],
+      "name": "withdrawBid",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x4172fe22ec80e389cde50d60c7e50a9482df79f0695c2ce81d3eae2171dc6ae8",
+  "receipt": {
+    "to": "0x1B4118Da6aD04370B8241a0DF3356844C6f27a1B",
+    "from": "0xf48928b8d6C04122778aD74C64886D972decA39F",
+    "contractAddress": null,
+    "transactionIndex": 10,
+    "gasUsed": "159448",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000080",
+    "blockHash": "0xad18ae5ee8e5a8addbf65aed7b78f676bad47a7f147c703b11bad9ca8257890f",
+    "transactionHash": "0x4172fe22ec80e389cde50d60c7e50a9482df79f0695c2ce81d3eae2171dc6ae8",
+    "logs": [
+      {
+        "transactionIndex": 10,
+        "blockNumber": 8765701,
+        "transactionHash": "0x4172fe22ec80e389cde50d60c7e50a9482df79f0695c2ce81d3eae2171dc6ae8",
+        "address": "0x1B4118Da6aD04370B8241a0DF3356844C6f27a1B",
+        "topics": [
+          "0x0efa7fa2fd1b4c468dff6dbfc032ec4845fc1f0e6b633d23767aa1450580e501"
+        ],
+        "data": "0x00000000000000000000000053a85e88e8ae11853da367cb2209e04000e28440000000000000000000000000982e00b16c313e979c0947b85230907fce45d50e000000000000000000000000e189a9c5acfd2e53c4663150b2703b9ffad224ff00000000000000000000000003b4e80b96d7f715aa21aabc56f75fecff89a4db",
+        "logIndex": 15,
+        "blockHash": "0xad18ae5ee8e5a8addbf65aed7b78f676bad47a7f147c703b11bad9ca8257890f"
+      }
+    ],
+    "events": [
+      {
+        "transactionIndex": 10,
+        "blockNumber": 8765701,
+        "transactionHash": "0x4172fe22ec80e389cde50d60c7e50a9482df79f0695c2ce81d3eae2171dc6ae8",
+        "address": "0x1B4118Da6aD04370B8241a0DF3356844C6f27a1B",
+        "topics": [
+          "0x0efa7fa2fd1b4c468dff6dbfc032ec4845fc1f0e6b633d23767aa1450580e501"
+        ],
+        "data": "0x00000000000000000000000053a85e88e8ae11853da367cb2209e04000e28440000000000000000000000000982e00b16c313e979c0947b85230907fce45d50e000000000000000000000000e189a9c5acfd2e53c4663150b2703b9ffad224ff00000000000000000000000003b4e80b96d7f715aa21aabc56f75fecff89a4db",
+        "logIndex": 15,
+        "blockHash": "0xad18ae5ee8e5a8addbf65aed7b78f676bad47a7f147c703b11bad9ca8257890f",
+        "args": [
+          "0x53A85e88E8Ae11853DA367Cb2209e04000E28440",
+          "0x982e00B16c313E979C0947b85230907Fce45d50e",
+          "0xE189A9C5AcFD2e53C4663150b2703b9fFAd224ff",
+          "0x03B4E80b96D7F715AA21AABC56F75fecfF89a4DB"
+        ],
+        "event": "NewQueue",
+        "eventSignature": "NewQueue(address,address,address,address)"
+      }
+    ],
+    "blockNumber": 8765701,
+    "cumulativeGasUsed": "880039",
+    "status": 1,
+    "byzantium": true
+  }
+}

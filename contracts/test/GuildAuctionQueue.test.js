@@ -1,11 +1,11 @@
-const {expect} = require('chai');
-const {ethers, waffle, deployments, getChainId} = require('hardhat');
-const {BigNumber, getContract, getSigners} = ethers;
-const {lockupPeriod} = require('../deploy/args.json');
+const { expect } = require('chai');
+const { ethers, waffle, deployments, getChainId } = require('hardhat');
+const { BigNumber, getContract, getSigners } = ethers;
+const { lockupPeriod } = require('../deploy/args.json');
 
 async function setup() {
-	await deployments.fixture(['GuildAuctionQueue']);
-	const auctionQueue = await getContract('GuildAuctionQueue');
+	await deployments.fixture(['queue']);
+	const auctionQueue = await getContract('queue');
 	const token = await getContract('TestERC20');
 	const moloch = await getContract('MolochTest');
 
@@ -19,7 +19,7 @@ async function setup() {
 const DETAILS =
 	'0x1000000000000000000000000000000000000000000000000000000000000000';
 
-describe('AuctionQueue', () => {
+describe('GuildAuctionQueue', () => {
 	let bidder, accepter, otherWallet, destination; // wallets
 	let token, moloch, auctionQueue; // deployed contracts
 	let lockup;
@@ -29,32 +29,6 @@ describe('AuctionQueue', () => {
 			await getSigners();
 
 		lockup = lockupPeriod[await getChainId()];
-	});
-
-	describe('deployment', () => {
-		beforeEach(async () => {
-			const contracts = await setup();
-			auctionQueue = contracts.auctionQueue;
-			token = contracts.token;
-			moloch = contracts.moloch;
-		});
-
-		it('sets the token', async () => {
-			expect(await auctionQueue.token()).to.equal(token.address);
-		});
-		it('sets the moloch', async () => {
-			expect(await auctionQueue.moloch()).to.equal(moloch.address);
-		});
-		it('sets the destination', async () => {
-			expect(await auctionQueue.destination()).to.equal(
-				destination.address
-			);
-		});
-		it('sets the lockupPeriod', async () => {
-			expect(await auctionQueue.lockupPeriod()).to.equal(
-				BigNumber.from(lockup)
-			);
-		});
 	});
 
 	describe('submitBid', () => {
