@@ -1,4 +1,3 @@
-import { dataSource } from "@graphprotocol/graph-ts"
 import {
   BidAccepted,
   BidCanceled,
@@ -21,7 +20,6 @@ export function handleNewBid(event: NewBid): void {
   bid.submitter = submitter.id
   bid.status = "queued"
   bid.details = event.params.details
-  bid.network = dataSource.network()
   bid.createdAt = event.block.timestamp
   bid.createTxHash = event.transaction.hash
 

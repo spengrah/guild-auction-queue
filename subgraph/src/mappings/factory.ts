@@ -13,8 +13,9 @@ export function handleNewQueue(event: NewQueue): void {
   queue.destination = event.params.destination
   queue.lockupPeriod = event.params.lockupPeriod
   queue.minShares = event.params.minShares
+  queue.network = dataSource.network();
 
-  // TODO create new queue entity
+  // create new queue entity
   GuildAuctionQueue.create(event.params.queueAddress);
   
   queue.save()

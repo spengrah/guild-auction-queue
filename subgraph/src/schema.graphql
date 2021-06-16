@@ -5,6 +5,7 @@ type Queue @entity {
 	destination: Bytes!
 	lockupPeriod: BigInt!
 	minShares: BigInt!
+	network: String!
 	bids: [Bid!]! @derivedFrom(field: "queue")
 }
 
@@ -24,7 +25,6 @@ type Bid @entity {
 	details: Bytes!
 	increases: [BidIncrease!] @derivedFrom(field: "bid")
 	withdraws: [BidWithdraw!] @derivedFrom(field: "bid")
-	network: String!
 	createdAt: BigInt! # seconds since epoch
 	createTxHash: Bytes!
 	acceptedAt: BigInt # seconds since epoch

@@ -7,5 +7,5 @@ artifacts/
 cache/
 coverage/
 coverage.json
-subgraph/subgraph.yaml
 subgraph.yaml
+.vscode/
