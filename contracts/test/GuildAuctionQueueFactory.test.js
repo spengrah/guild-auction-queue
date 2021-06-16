@@ -2,17 +2,20 @@ const { expect } = require('chai');
 const { ethers, waffle, deployments, getChainId } = require('hardhat');
 const { deploy, get } = deployments;
 const { BigNumber, getContract, getSigners } = ethers;
-const { lockupPeriod } = require('../deploy/args.json');
+const { lockupPeriod, minShares } = require('../deploy/args.json');
 
 describe('GuildAuctionQueueFactory', () => {
 	//
 	let token, moloch, implementation, factory, auctionQueue;
 	let deployer, destination;
 	let lockup;
+	let minSharez;
 
 	before(async () => {
 		[deployer, , , destination] = await getSigners();
-		lockup = lockupPeriod[await getChainId()];
+		const chainId = await getChainId();
+		lockup = lockupPeriod[chainId];
+		minSharez = minShares[chainId];
 	});
 
 	describe('deployment', () => {
@@ -60,6 +63,11 @@ describe('GuildAuctionQueueFactory', () => {
 		it('sets the lockupPeriod', async () => {
 			expect(await auctionQueue.lockupPeriod()).to.equal(
 				BigNumber.from(lockup)
+			);
+		});
+		it('sets the minShares', async () => {
+			expect(await auctionQueue.minShares()).to.equal(
+				BigNumber.from(minSharez)
 			);
 		});
 		it('emits NewQueue event', async () => {
@@ -111,6 +119,11 @@ describe('GuildAuctionQueueFactory', () => {
 		it('sets the lockupPeriod', async () => {
 			expect(await auctionQueue.lockupPeriod()).to.equal(
 				BigNumber.from(lockup)
+			);
+		});
+		it('sets the minShares', async () => {
+			expect(await auctionQueue.minShares()).to.equal(
+				BigNumber.from(minSharez)
 			);
 		});
 		it('emits NewQueue event', async () => {

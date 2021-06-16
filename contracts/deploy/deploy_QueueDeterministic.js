@@ -15,6 +15,7 @@ module.exports = async ({
 	let token;
 	let moloch;
 	const lockupPeriod = deployArgs.lockupPeriod[chainId];
+	const minShares = deployArgs.minShares[chainId];
 
 	// if deploying for testing, deploy test integration contracts
 	if (hre.network.tags.test) {
@@ -47,6 +48,7 @@ module.exports = async ({
 		moloch.address,
 		destination,
 		lockupPeriod,
+		minShares,
 		salt
 	);
 

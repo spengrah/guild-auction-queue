@@ -1,13 +1,12 @@
-import { Address, BigInt, dataSource } from "@graphprotocol/graph-ts"
+import { dataSource } from "@graphprotocol/graph-ts"
 import {
-  GuildAuctionQueue,
   BidAccepted,
   BidCanceled,
   BidIncreased,
   BidWithdrawn,
   NewBid
-} from "../generated/GuildAuctionQueue/GuildAuctionQueue"
-import { Bid, Submitter, Accepter, BidIncrease, BidWithdraw, } from "../generated/schema"
+} from "../../generated/GuildAuctionQueue/GuildAuctionQueue"
+import { Bid, Submitter, Accepter, BidIncrease, BidWithdraw, } from "../../generated/schema"
 
 export function handleNewBid(event: NewBid): void {
   let bid = new Bid(event.params.id.toHex())

@@ -7,7 +7,8 @@ interface IGuildAuctionQueue {
         address token,
         address moloch,
         address destination,
-        uint256 lockupPeriod
+        uint256 lockupPeriod,
+        uint256 minShares
     ) external;
 
     function submitBid(uint256 amount, bytes32 details) external;

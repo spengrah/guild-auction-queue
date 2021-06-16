@@ -1,5 +1,10 @@
 {
     "network": "rinkeby",
-    "address": "0x5B418d3FA466BAB88EDDec8f570b5Ec3102560d9",
-    "startBlock": 8758331
+    "factories": [
+        {
+            "factoryName": "Version00",
+            "startBlock": 8765686,
+            "address": "0x1b4118da6ad04370b8241a0df3356844c6f27a1b"
+        }
+    ]
 }

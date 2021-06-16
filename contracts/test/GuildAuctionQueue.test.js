@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 const { ethers, waffle, deployments, getChainId } = require('hardhat');
 const { BigNumber, getContract, getSigners } = ethers;
+const { get } = deployments;
 const { lockupPeriod } = require('../deploy/args.json');
 
 async function setup() {
@@ -29,6 +30,27 @@ describe('GuildAuctionQueue', () => {
 			await getSigners();
 
 		lockup = lockupPeriod[await getChainId()];
+	});
+
+	describe('init', () => {
+		it('cannot be called multiple times', async () => {
+			const contracts = await setup();
+			auctionQueue = contracts.auctionQueue;
+			token = contracts.token;
+			moloch = contracts.moloch;
+
+			receipt = auctionQueue.init(
+				token.address,
+				moloch.address,
+				destination.address,
+				lockup,
+				1 // minShares
+			);
+
+			await expect(receipt).to.be.revertedWith(
+				'Initializable: contract is already initialized'
+			);
+		});
 	});
 
 	describe('submitBid', () => {
@@ -401,7 +423,7 @@ describe('GuildAuctionQueue', () => {
 		});
 
 		describe(':(', () => {
-			before(async () => {
+			beforeEach(async () => {
 				const contracts = await setup();
 
 				auctionQueue = contracts.auctionQueue;
@@ -426,7 +448,41 @@ describe('GuildAuctionQueue', () => {
 
 				receipt = queue_other.acceptBid(0);
 				await expect(receipt).to.be.revertedWith(
-					'not member of moloch'
+					'not full member of moloch'
+				);
+			});
+			it('reverts if not *full* moloch member', async () => {
+				const factory = await getContract('GuildAuctionQueueFactory');
+
+				// deploy an instance where minShares = 100
+				const smallReceipt = await factory.create(
+					token.address,
+					moloch.address,
+					destination.address,
+					lockup,
+					100 // minShares
+				);
+
+				const fullReceipt = await smallReceipt.wait();
+
+				const queueAddress =
+					fullReceipt.events[0].args['queueAddress'].toString();
+
+				const { abi } = await get('GuildAuctionQueue');
+
+				const queue = new ethers.Contract(queueAddress, abi, accepter);
+
+				queue_bidder = queue.connect(bidder);
+				await token.setBalance(bidder.address, 100);
+				token_bidder = token.connect(bidder);
+				await token_bidder.approve(queue_bidder.address, 100);
+
+				await queue_bidder.submitBid(BigNumber.from(75), DETAILS);
+
+				const call = queue.acceptBid(0);
+
+				await expect(call).to.be.revertedWith(
+					'not full member of moloch'
 				);
 			});
 			it('reverts on inactive bid', async () => {

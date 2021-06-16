@@ -13,6 +13,7 @@ contract GuildAuctionQueue is ReentrancyGuard, Initializable {
     address public destination; // where tokens go when bids are accepted
     uint256 public lockupPeriod; // period for which bids are locked and cannot be withdrawn, in seconds
     uint256 public newBidId; // the id of the next bid to be submitted; starts at 0
+    uint256 public minShares; // the number of moloch shares a member must have to be eligible to accept a bid
 
     // -- Data Models --
 
@@ -30,16 +31,24 @@ contract GuildAuctionQueue is ReentrancyGuard, Initializable {
 
     // -- Functions --
 
+    // TODO add a way to determine whether accepters are moloch members or an arbitrary single address (eg a moloch's minon)
     function init(
         address _token,
         address _moloch,
         address _destination,
-        uint256 _lockupPeriod
+        uint256 _lockupPeriod,
+        uint256 _minShares // must be > 0
     ) external initializer {
+        require(_token != address(0), "invalid token");
+        require(_moloch != address(0), "invalid moloch");
+        require(_destination != address(0), "invalid destination");
+        require(_minShares > 0, "minShares must be > 0");
+
         token = IERC20(_token);
         moloch = IMOLOCH(_moloch);
         destination = _destination;
         lockupPeriod = _lockupPeriod;
+        minShares = _minShares;
     }
 
     function submitBid(uint256 _amount, bytes32 _details)
@@ -135,12 +144,12 @@ contract GuildAuctionQueue is ReentrancyGuard, Initializable {
 
     function isMember(address user) public view returns (bool) {
         (, uint256 shares, , , , ) = moloch.members(user);
-        return shares > 0;
+        return shares >= minShares;
     }
 
     // -- Modifiers --
     modifier memberOnly() {
-        require(isMember(msg.sender), "not member of moloch");
+        require(isMember(msg.sender), "not full member of moloch");
         _;
     }
 

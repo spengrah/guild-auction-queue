@@ -18,12 +18,20 @@ contract GuildAuctionQueueFactory {
         address _token,
         address _moloch,
         address _destination,
-        uint256 _lockupPeriod
+        uint256 _lockupPeriod,
+        uint256 _minShares
     ) external returns (address) {
         //
         address queueAddress = Clones.clone(implementation);
 
-        _init(queueAddress, _token, _moloch, _destination, _lockupPeriod);
+        _init(
+            queueAddress,
+            _token,
+            _moloch,
+            _destination,
+            _lockupPeriod,
+            _minShares
+        );
 
         return queueAddress;
     }
@@ -33,12 +41,20 @@ contract GuildAuctionQueueFactory {
         address _moloch,
         address _destination,
         uint256 _lockupPeriod,
+        uint256 _minShares,
         bytes32 _salt
     ) external returns (address) {
         //
         address queueAddress = Clones.cloneDeterministic(implementation, _salt);
 
-        _init(queueAddress, _token, _moloch, _destination, _lockupPeriod);
+        _init(
+            queueAddress,
+            _token,
+            _moloch,
+            _destination,
+            _lockupPeriod,
+            _minShares
+        );
 
         return queueAddress;
     }
@@ -56,16 +72,25 @@ contract GuildAuctionQueueFactory {
         address _token,
         address _moloch,
         address _destination,
-        uint256 _lockupPeriod
+        uint256 _lockupPeriod,
+        uint256 _minShares
     ) internal {
         IGuildAuctionQueue(_queueAddress).init(
             _token,
             _moloch,
             _destination,
-            _lockupPeriod
+            _lockupPeriod,
+            _minShares
         );
 
-        emit NewQueue(_queueAddress, _token, _moloch, _destination);
+        emit NewQueue(
+            _queueAddress,
+            _token,
+            _moloch,
+            _destination,
+            _lockupPeriod,
+            _minShares
+        );
     }
 
     // Event
@@ -74,6 +99,8 @@ contract GuildAuctionQueueFactory {
         address queueAddress,
         address token,
         address moloch,
-        address destination
+        address destination,
+        uint256 lockupPeriod,
+        uint256 minShares
     );
 }

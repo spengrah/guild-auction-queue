@@ -5,7 +5,8 @@ require('hardhat-gas-reporter');
 require('hardhat-deploy');
 require('hardhat-deploy-ethers');
 
-const { ETHERSCAN_API_KEY, INFURA_PROJECT_ID, SEED } = process.env;
+const { ETHERSCAN_API_KEY, INFURA_PROJECT_ID, SEED, COINMARKETCAP_API_KEY } =
+	process.env;
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -76,5 +77,11 @@ module.exports = {
 	},
 	etherscan: {
 		apiKey: ETHERSCAN_API_KEY,
+	},
+	gasReporter: {
+		currency: 'USD',
+		gasPrice: 10,
+		excludeContracts: ['test/'],
+		coinmarketcap: COINMARKETCAP_API_KEY,
 	},
 };

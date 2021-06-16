@@ -1,7 +1,0 @@
-node_modules/
-yarn-error.log
-artifacts/
-cache/
-.env
-coverage/
-coverage.json
