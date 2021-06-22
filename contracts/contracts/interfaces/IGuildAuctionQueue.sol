@@ -4,10 +4,11 @@ pragma solidity ^0.8.0;
 
 interface IGuildAuctionQueue {
     function init(
+        address owner,
         address token,
-        address moloch,
         address destination,
         uint256 lockupPeriod,
+        uint256 minBid,
         uint256 minShares
     ) external;
 

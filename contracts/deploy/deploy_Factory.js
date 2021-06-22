@@ -1,8 +1,8 @@
 module.exports = async ({ getNamedAccounts, deployments }) => {
-	const { deploy } = deployments;
+	const { deploy, get } = deployments;
 	const { deployer } = await getNamedAccounts();
 
-	const Implementation = await deployments.get('GuildAuctionQueue');
+	const Implementation = await get('GuildAuctionQueue');
 
 	await deploy('GuildAuctionQueueFactory', {
 		from: deployer,
