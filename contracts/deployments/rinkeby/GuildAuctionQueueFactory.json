@@ -1,5 +1,5 @@
 {
-  "address": "0x1B4118Da6aD04370B8241a0DF3356844C6f27a1B",
+  "address": "0xC4b6005f48417D67b2a81c3E31672f4042D36361",
   "abi": [
     {
       "inputs": [
@@ -24,13 +24,13 @@
         {
           "indexed": false,
           "internalType": "address",
-          "name": "token",
+          "name": "owner",
           "type": "address"
         },
         {
           "indexed": false,
           "internalType": "address",
-          "name": "moloch",
+          "name": "token",
           "type": "address"
         },
         {
@@ -38,6 +38,24 @@
           "internalType": "address",
           "name": "destination",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lockupPeriod",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "minBid",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "minShares",
+          "type": "uint256"
         }
       ],
       "name": "NewQueue",
@@ -52,60 +70,26 @@
         },
         {
           "internalType": "address",
-          "name": "_moloch",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
           "name": "_destination",
           "type": "address"
         },
         {
           "internalType": "uint256",
           "name": "_lockupPeriod",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_minBid",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_minShares",
           "type": "uint256"
         }
       ],
       "name": "create",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_token",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_moloch",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_destination",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_lockupPeriod",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "_salt",
-          "type": "bytes32"
-        }
-      ],
-      "name": "createDeterministic",
       "outputs": [
         {
           "internalType": "address",
@@ -128,50 +112,31 @@
       ],
       "stateMutability": "view",
       "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "_salt",
-          "type": "bytes32"
-        }
-      ],
-      "name": "predictDeterministicAddress",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
     }
   ],
-  "transactionHash": "0xbe6ecf32e3ee0ac25ca830fd834992eb472e6cbed02fbc81a150ea969c0146b2",
+  "transactionHash": "0xfa5a6fd6fb490589bb5e07a9e6c4b88cb19d271e0181a681525306177ffec264",
   "receipt": {
     "to": null,
     "from": "0xf48928b8d6C04122778aD74C64886D972decA39F",
-    "contractAddress": "0x1B4118Da6aD04370B8241a0DF3356844C6f27a1B",
-    "transactionIndex": 3,
-    "gasUsed": "354079",
+    "contractAddress": "0xC4b6005f48417D67b2a81c3E31672f4042D36361",
+    "transactionIndex": 1,
+    "gasUsed": "238533",
     "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-    "blockHash": "0x620abd1f29e497ed98e40019a7bcfd071b59a29327e6604e9847e0f26bab1b32",
-    "transactionHash": "0xbe6ecf32e3ee0ac25ca830fd834992eb472e6cbed02fbc81a150ea969c0146b2",
+    "blockHash": "0xf2dc52f4eac668045df3d5b54c484c714b144c1c77561db4a56224851a2adfe8",
+    "transactionHash": "0xfa5a6fd6fb490589bb5e07a9e6c4b88cb19d271e0181a681525306177ffec264",
     "logs": [],
-    "blockNumber": 8765686,
-    "cumulativeGasUsed": "5772515",
+    "blockNumber": 8810937,
+    "cumulativeGasUsed": "263333",
     "status": 1,
     "byzantium": true
   },
   "args": [
-    "0x95647F88dcbC12986046fc4f49064Edd11a25d38"
+    "0x9b50AB91b3ffBcdd5d5Ed49eD70bf299434C955C"
   ],
-  "solcInputHash": "11c7d8945c396bcf0d37a4e5f797532e",
-  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_implementation\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"queueAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"moloch\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"destination\",\"type\":\"address\"}],\"name\":\"NewQueue\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_moloch\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_destination\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_lockupPeriod\",\"type\":\"uint256\"}],\"name\":\"create\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_moloch\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_destination\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_lockupPeriod\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"_salt\",\"type\":\"bytes32\"}],\"name\":\"createDeterministic\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"implementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_salt\",\"type\":\"bytes32\"}],\"name\":\"predictDeterministicAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/GuildAuctionQueueFactory.sol\":\"GuildAuctionQueueFactory\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/GuildAuctionQueueFactory.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\nimport \\\"./oz/Clones.sol\\\";\\nimport \\\"./interfaces/IGuildAuctionQueue.sol\\\";\\n\\ncontract GuildAuctionQueueFactory {\\n    address public immutable implementation;\\n\\n    constructor(address _implementation) {\\n        require(_implementation != address(0), \\\"invalid implementation\\\");\\n\\n        implementation = _implementation;\\n    }\\n\\n    function create(\\n        address _token,\\n        address _moloch,\\n        address _destination,\\n        uint256 _lockupPeriod\\n    ) external returns (address) {\\n        //\\n        address queueAddress = Clones.clone(implementation);\\n\\n        _init(queueAddress, _token, _moloch, _destination, _lockupPeriod);\\n\\n        return queueAddress;\\n    }\\n\\n    function createDeterministic(\\n        address _token,\\n        address _moloch,\\n        address _destination,\\n        uint256 _lockupPeriod,\\n        bytes32 _salt\\n    ) external returns (address) {\\n        //\\n        address queueAddress = Clones.cloneDeterministic(implementation, _salt);\\n\\n        _init(queueAddress, _token, _moloch, _destination, _lockupPeriod);\\n\\n        return queueAddress;\\n    }\\n\\n    function predictDeterministicAddress(bytes32 _salt)\\n        external\\n        view\\n        returns (address)\\n    {\\n        return Clones.predictDeterministicAddress(implementation, _salt);\\n    }\\n\\n    function _init(\\n        address _queueAddress,\\n        address _token,\\n        address _moloch,\\n        address _destination,\\n        uint256 _lockupPeriod\\n    ) internal {\\n        IGuildAuctionQueue(_queueAddress).init(\\n            _token,\\n            _moloch,\\n            _destination,\\n            _lockupPeriod\\n        );\\n\\n        emit NewQueue(_queueAddress, _token, _moloch, _destination);\\n    }\\n\\n    // Event\\n\\n    event NewQueue(\\n        address queueAddress,\\n        address token,\\n        address moloch,\\n        address destination\\n    );\\n}\\n\",\"keccak256\":\"0x15cea593c07d63417e23e75b17b3b99183396154f858d96a211b7a45966aa192\",\"license\":\"MIT\"},\"contracts/interfaces/IGuildAuctionQueue.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\ninterface IGuildAuctionQueue {\\n    function init(\\n        address token,\\n        address moloch,\\n        address destination,\\n        uint256 lockupPeriod\\n    ) external;\\n\\n    function submitBid(uint256 amount, bytes32 details) external;\\n\\n    function increaseBid(uint256 amount, uint256 id) external;\\n\\n    function withdrawBid(uint256 amount, uint32 id) external;\\n\\n    function cancelBid(uint256 id) external;\\n\\n    function acceptBid(uint256 id) external;\\n\\n    function isMember(address user) external view returns (bool);\\n}\\n\",\"keccak256\":\"0x3fedf00f1d2d81f1dd60ed8b7ce32f99d4c2c9c6376e3edf6da587ce5d4d603a\",\"license\":\"MIT\"},\"contracts/oz/Clones.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\n/**\\n * @dev https://eips.ethereum.org/EIPS/eip-1167[EIP 1167] is a standard for\\n * deploying minimal proxy contracts, also known as \\\"clones\\\".\\n *\\n * > To simply and cheaply clone contract functionality in an immutable way, this standard specifies\\n * > a minimal bytecode implementation that delegates all calls to a known, fixed address.\\n *\\n * The library includes functions to deploy a proxy using either `create` (traditional deployment) or `create2`\\n * (salted deterministic deployment). It also includes functions to predict the addresses of clones deployed using the\\n * deterministic method.\\n *\\n * _Available since v3.4._\\n */\\nlibrary Clones {\\n    /**\\n     * @dev Deploys and returns the address of a clone that mimics the behaviour of `implementation`.\\n     *\\n     * This function uses the create opcode, which should never revert.\\n     */\\n    function clone(address implementation) internal returns (address instance) {\\n        // solhint-disable-next-line no-inline-assembly\\n        assembly {\\n            let ptr := mload(0x40)\\n            mstore(\\n                ptr,\\n                0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000\\n            )\\n            mstore(add(ptr, 0x14), shl(0x60, implementation))\\n            mstore(\\n                add(ptr, 0x28),\\n                0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000\\n            )\\n            instance := create(0, ptr, 0x37)\\n        }\\n        require(instance != address(0), \\\"ERC1167: create failed\\\");\\n    }\\n\\n    /**\\n     * @dev Deploys and returns the address of a clone that mimics the behaviour of `implementation`.\\n     *\\n     * This function uses the create2 opcode and a `salt` to deterministically deploy\\n     * the clone. Using the same `implementation` and `salt` multiple time will revert, since\\n     * the clones cannot be deployed twice at the same address.\\n     */\\n    function cloneDeterministic(address implementation, bytes32 salt)\\n        internal\\n        returns (address instance)\\n    {\\n        // solhint-disable-next-line no-inline-assembly\\n        assembly {\\n            let ptr := mload(0x40)\\n            mstore(\\n                ptr,\\n                0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000\\n            )\\n            mstore(add(ptr, 0x14), shl(0x60, implementation))\\n            mstore(\\n                add(ptr, 0x28),\\n                0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000\\n            )\\n            instance := create2(0, ptr, 0x37, salt)\\n        }\\n        require(instance != address(0), \\\"ERC1167: create2 failed\\\");\\n    }\\n\\n    /**\\n     * @dev Computes the address of a clone deployed using {Clones-cloneDeterministic}.\\n     */\\n    function predictDeterministicAddress(\\n        address implementation,\\n        bytes32 salt,\\n        address deployer\\n    ) internal pure returns (address predicted) {\\n        // solhint-disable-next-line no-inline-assembly\\n        assembly {\\n            let ptr := mload(0x40)\\n            mstore(\\n                ptr,\\n                0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000\\n            )\\n            mstore(add(ptr, 0x14), shl(0x60, implementation))\\n            mstore(\\n                add(ptr, 0x28),\\n                0x5af43d82803e903d91602b57fd5bf3ff00000000000000000000000000000000\\n            )\\n            mstore(add(ptr, 0x38), shl(0x60, deployer))\\n            mstore(add(ptr, 0x4c), salt)\\n            mstore(add(ptr, 0x6c), keccak256(ptr, 0x37))\\n            predicted := keccak256(add(ptr, 0x37), 0x55)\\n        }\\n    }\\n\\n    /**\\n     * @dev Computes the address of a clone deployed using {Clones-cloneDeterministic}.\\n     */\\n    function predictDeterministicAddress(address implementation, bytes32 salt)\\n        internal\\n        view\\n        returns (address predicted)\\n    {\\n        return predictDeterministicAddress(implementation, salt, address(this));\\n    }\\n}\\n\",\"keccak256\":\"0x5288b36897beda70bfb2934a3d821a08365f7d4271851ac050ded8502dd1b4cf\",\"license\":\"MIT\"}},\"version\":1}",
-  "bytecode": "0x60a060405234801561001057600080fd5b5060405161066e38038061066e83398101604081905261002f91610073565b6001600160a01b03811661005e5760405162461bcd60e51b8152600401610055906100a1565b60405180910390fd5b60601b6001600160601b0319166080526100d8565b600060208284031215610084578081fd5b81516001600160a01b038116811461009a578182fd5b9392505050565b60208082526016908201527f696e76616c696420696d706c656d656e746174696f6e00000000000000000000604082015260600190565b60805160601c6105656101096000396000818160b00152818160f501528181610124015261014e01526105656000f3fe608060405234801561001057600080fd5b506004361061004c5760003560e01c80630f057334146100515780635414dff01461007a5780635c60da1b1461008d5780635e90eb3614610095575b600080fd5b61006461005f3660046103f3565b6100a8565b604051610071919061045f565b60405180910390f35b610064610088366004610447565b6100ee565b610064610122565b6100646100a33660046103a9565b610146565b6000806100d57f00000000000000000000000000000000000000000000000000000000000000008461018a565b90506100e48188888888610209565b9695505050505050565b600061011a7f0000000000000000000000000000000000000000000000000000000000000000836102b1565b90505b919050565b7f000000000000000000000000000000000000000000000000000000000000000081565b6000806101727f00000000000000000000000000000000000000000000000000000000000000006102c5565b90506101818187878787610209565b95945050505050565b6000604051733d602d80600a3d3981f3363d3d373d3d3d363d7360601b81528360601b60148201526e5af43d82803e903d91602b57fd5bf360881b6028820152826037826000f59150506001600160a01b0381166102035760405162461bcd60e51b81526004016101fa906104c8565b60405180910390fd5b92915050565b604051632331cedd60e11b81526001600160a01b038616906346639dba9061023b90879087908790879060040161049e565b600060405180830381600087803b15801561025557600080fd5b505af1158015610269573d6000803e3d6000fd5b505050507f0efa7fa2fd1b4c468dff6dbfc032ec4845fc1f0e6b633d23767aa1450580e501858585856040516102a29493929190610473565b60405180910390a15050505050565b60006102be838330610334565b9392505050565b6000604051733d602d80600a3d3981f3363d3d373d3d3d363d7360601b81528260601b60148201526e5af43d82803e903d91602b57fd5bf360881b60288201526037816000f09150506001600160a01b03811661011d5760405162461bcd60e51b81526004016101fa906104ff565b604051733d602d80600a3d3981f3363d3d373d3d3d363d7360601b8152606093841b60148201526f5af43d82803e903d91602b57fd5bf3ff60801b6028820152921b6038830152604c8201526037808220606c830152605591012090565b80356001600160a01b038116811461011d57600080fd5b600080600080608085870312156103be578384fd5b6103c785610392565b93506103d560208601610392565b92506103e360408601610392565b9396929550929360600135925050565b600080600080600060a0868803121561040a578081fd5b61041386610392565b945061042160208701610392565b935061042f60408701610392565b94979396509394606081013594506080013592915050565b600060208284031215610458578081fd5b5035919050565b6001600160a01b0391909116815260200190565b6001600160a01b03948516815292841660208401529083166040830152909116606082015260800190565b6001600160a01b039485168152928416602084015292166040820152606081019190915260800190565b60208082526017908201527f455243313136373a2063726561746532206661696c6564000000000000000000604082015260600190565b602080825260169082015275115490cc4c4d8dce8818dc99585d194819985a5b195960521b60408201526060019056fea26469706673582212208fb0261c56482a9d8761bdf7dd5a8e6ed2e5a8cde26d79f9a6ef7908f2dab0e764736f6c63430008000033",
-  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061004c5760003560e01c80630f057334146100515780635414dff01461007a5780635c60da1b1461008d5780635e90eb3614610095575b600080fd5b61006461005f3660046103f3565b6100a8565b604051610071919061045f565b60405180910390f35b610064610088366004610447565b6100ee565b610064610122565b6100646100a33660046103a9565b610146565b6000806100d57f00000000000000000000000000000000000000000000000000000000000000008461018a565b90506100e48188888888610209565b9695505050505050565b600061011a7f0000000000000000000000000000000000000000000000000000000000000000836102b1565b90505b919050565b7f000000000000000000000000000000000000000000000000000000000000000081565b6000806101727f00000000000000000000000000000000000000000000000000000000000000006102c5565b90506101818187878787610209565b95945050505050565b6000604051733d602d80600a3d3981f3363d3d373d3d3d363d7360601b81528360601b60148201526e5af43d82803e903d91602b57fd5bf360881b6028820152826037826000f59150506001600160a01b0381166102035760405162461bcd60e51b81526004016101fa906104c8565b60405180910390fd5b92915050565b604051632331cedd60e11b81526001600160a01b038616906346639dba9061023b90879087908790879060040161049e565b600060405180830381600087803b15801561025557600080fd5b505af1158015610269573d6000803e3d6000fd5b505050507f0efa7fa2fd1b4c468dff6dbfc032ec4845fc1f0e6b633d23767aa1450580e501858585856040516102a29493929190610473565b60405180910390a15050505050565b60006102be838330610334565b9392505050565b6000604051733d602d80600a3d3981f3363d3d373d3d3d363d7360601b81528260601b60148201526e5af43d82803e903d91602b57fd5bf360881b60288201526037816000f09150506001600160a01b03811661011d5760405162461bcd60e51b81526004016101fa906104ff565b604051733d602d80600a3d3981f3363d3d373d3d3d363d7360601b8152606093841b60148201526f5af43d82803e903d91602b57fd5bf3ff60801b6028820152921b6038830152604c8201526037808220606c830152605591012090565b80356001600160a01b038116811461011d57600080fd5b600080600080608085870312156103be578384fd5b6103c785610392565b93506103d560208601610392565b92506103e360408601610392565b9396929550929360600135925050565b600080600080600060a0868803121561040a578081fd5b61041386610392565b945061042160208701610392565b935061042f60408701610392565b94979396509394606081013594506080013592915050565b600060208284031215610458578081fd5b5035919050565b6001600160a01b0391909116815260200190565b6001600160a01b03948516815292841660208401529083166040830152909116606082015260800190565b6001600160a01b039485168152928416602084015292166040820152606081019190915260800190565b60208082526017908201527f455243313136373a2063726561746532206661696c6564000000000000000000604082015260600190565b602080825260169082015275115490cc4c4d8dce8818dc99585d194819985a5b195960521b60408201526060019056fea26469706673582212208fb0261c56482a9d8761bdf7dd5a8e6ed2e5a8cde26d79f9a6ef7908f2dab0e764736f6c63430008000033",
+  "solcInputHash": "12c27a230386c840201c65d7f731e8ad",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_implementation\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"queueAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"destination\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lockupPeriod\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"minBid\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"minShares\",\"type\":\"uint256\"}],\"name\":\"NewQueue\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_destination\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_lockupPeriod\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minBid\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minShares\",\"type\":\"uint256\"}],\"name\":\"create\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"implementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/GuildAuctionQueueFactory.sol\":\"GuildAuctionQueueFactory\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/proxy/Clones.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\n/**\\n * @dev https://eips.ethereum.org/EIPS/eip-1167[EIP 1167] is a standard for\\n * deploying minimal proxy contracts, also known as \\\"clones\\\".\\n *\\n * > To simply and cheaply clone contract functionality in an immutable way, this standard specifies\\n * > a minimal bytecode implementation that delegates all calls to a known, fixed address.\\n *\\n * The library includes functions to deploy a proxy using either `create` (traditional deployment) or `create2`\\n * (salted deterministic deployment). It also includes functions to predict the addresses of clones deployed using the\\n * deterministic method.\\n *\\n * _Available since v3.4._\\n */\\nlibrary Clones {\\n    /**\\n     * @dev Deploys and returns the address of a clone that mimics the behaviour of `implementation`.\\n     *\\n     * This function uses the create opcode, which should never revert.\\n     */\\n    function clone(address implementation) internal returns (address instance) {\\n        // solhint-disable-next-line no-inline-assembly\\n        assembly {\\n            let ptr := mload(0x40)\\n            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)\\n            mstore(add(ptr, 0x14), shl(0x60, implementation))\\n            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)\\n            instance := create(0, ptr, 0x37)\\n        }\\n        require(instance != address(0), \\\"ERC1167: create failed\\\");\\n    }\\n\\n    /**\\n     * @dev Deploys and returns the address of a clone that mimics the behaviour of `implementation`.\\n     *\\n     * This function uses the create2 opcode and a `salt` to deterministically deploy\\n     * the clone. Using the same `implementation` and `salt` multiple time will revert, since\\n     * the clones cannot be deployed twice at the same address.\\n     */\\n    function cloneDeterministic(address implementation, bytes32 salt) internal returns (address instance) {\\n        // solhint-disable-next-line no-inline-assembly\\n        assembly {\\n            let ptr := mload(0x40)\\n            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)\\n            mstore(add(ptr, 0x14), shl(0x60, implementation))\\n            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)\\n            instance := create2(0, ptr, 0x37, salt)\\n        }\\n        require(instance != address(0), \\\"ERC1167: create2 failed\\\");\\n    }\\n\\n    /**\\n     * @dev Computes the address of a clone deployed using {Clones-cloneDeterministic}.\\n     */\\n    function predictDeterministicAddress(address implementation, bytes32 salt, address deployer) internal pure returns (address predicted) {\\n        // solhint-disable-next-line no-inline-assembly\\n        assembly {\\n            let ptr := mload(0x40)\\n            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)\\n            mstore(add(ptr, 0x14), shl(0x60, implementation))\\n            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf3ff00000000000000000000000000000000)\\n            mstore(add(ptr, 0x38), shl(0x60, deployer))\\n            mstore(add(ptr, 0x4c), salt)\\n            mstore(add(ptr, 0x6c), keccak256(ptr, 0x37))\\n            predicted := keccak256(add(ptr, 0x37), 0x55)\\n        }\\n    }\\n\\n    /**\\n     * @dev Computes the address of a clone deployed using {Clones-cloneDeterministic}.\\n     */\\n    function predictDeterministicAddress(address implementation, bytes32 salt) internal view returns (address predicted) {\\n        return predictDeterministicAddress(implementation, salt, address(this));\\n    }\\n}\\n\",\"keccak256\":\"0x90dec20805396efc780a82c62578626103e03278bc1f48b61bb3aba52a61617c\",\"license\":\"MIT\"},\"contracts/GuildAuctionQueueFactory.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\nimport \\\"@openzeppelin/contracts/proxy/Clones.sol\\\";\\nimport \\\"./interfaces/IGuildAuctionQueue.sol\\\";\\n\\ncontract GuildAuctionQueueFactory {\\n    address public immutable implementation;\\n\\n    constructor(address _implementation) {\\n        require(_implementation != address(0), \\\"invalid implementation\\\");\\n\\n        implementation = _implementation;\\n    }\\n\\n    function create(\\n        address _token,\\n        address _destination,\\n        uint256 _lockupPeriod,\\n        uint256 _minBid,\\n        uint256 _minShares\\n    ) external returns (address) {\\n        //\\n        address queueAddress = Clones.clone(implementation);\\n\\n        IGuildAuctionQueue(queueAddress).init(\\n            msg.sender,\\n            _token,\\n            _destination,\\n            _lockupPeriod,\\n            _minBid,\\n            _minShares\\n        );\\n\\n        emit NewQueue(\\n            queueAddress,\\n            msg.sender,\\n            _token,\\n            _destination,\\n            _lockupPeriod,\\n            _minBid,\\n            _minShares\\n        );\\n\\n        return queueAddress;\\n    }\\n\\n    // Event\\n\\n    event NewQueue(\\n        address queueAddress,\\n        address owner,\\n        address token,\\n        address destination,\\n        uint256 lockupPeriod,\\n        uint256 minBid,\\n        uint256 minShares\\n    );\\n}\\n\",\"keccak256\":\"0x426eb38618ae0488612839fb303ec8c8c55ca305201c2977f804aedb9f1510e5\",\"license\":\"MIT\"},\"contracts/interfaces/IGuildAuctionQueue.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\ninterface IGuildAuctionQueue {\\n    function init(\\n        address owner,\\n        address token,\\n        address destination,\\n        uint256 lockupPeriod,\\n        uint256 minBid,\\n        uint256 minShares\\n    ) external;\\n\\n    function submitBid(uint256 amount, bytes32 details) external;\\n\\n    function increaseBid(uint256 amount, uint256 id) external;\\n\\n    function withdrawBid(uint256 amount, uint32 id) external;\\n\\n    function cancelBid(uint256 id) external;\\n\\n    function acceptBid(uint256 id) external;\\n\\n    function isMember(address user) external view returns (bool);\\n}\\n\",\"keccak256\":\"0xbbb3ceffb4d5d31e96c2ac4dfc376f11ba0a85c3f3d996655bf483c75ffdbaa3\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60a060405234801561001057600080fd5b5060405161044638038061044683398101604081905261002f91610073565b6001600160a01b03811661005e5760405162461bcd60e51b8152600401610055906100a1565b60405180910390fd5b60601b6001600160601b0319166080526100d8565b600060208284031215610084578081fd5b81516001600160a01b038116811461009a578182fd5b9392505050565b60208082526016908201527f696e76616c696420696d706c656d656e746174696f6e00000000000000000000604082015260600190565b60805160601c61034b6100fb60003960008181606e01526098015261034b6000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c80635c60da1b1461003b578063891b1a0014610059575b600080fd5b61004361006c565b6040516100509190610254565b60405180910390f35b610043610067366004610208565b610090565b7f000000000000000000000000000000000000000000000000000000000000000081565b6000806100bc7f0000000000000000000000000000000000000000000000000000000000000000610174565b604051630ce3738760e41b81529091506001600160a01b0382169063ce373870906100f59033908b908b908b908b908b906004016102ac565b600060405180830381600087803b15801561010f57600080fd5b505af1158015610123573d6000803e3d6000fd5b505050507f59e16b922ce5d94cc6b2db6b42d1a6bc2dd08e71fbdd512f43c7750f6a045a25813389898989896040516101629796959493929190610268565b60405180910390a19695505050505050565b6000604051733d602d80600a3d3981f3363d3d373d3d3d363d7360601b81528260601b60148201526e5af43d82803e903d91602b57fd5bf360881b60288201526037816000f09150506001600160a01b0381166101ec5760405162461bcd60e51b81526004016101e3906102e5565b60405180910390fd5b919050565b80356001600160a01b03811681146101ec57600080fd5b600080600080600060a0868803121561021f578081fd5b610228866101f1565b9450610236602087016101f1565b94979496505050506040830135926060810135926080909101359150565b6001600160a01b0391909116815260200190565b6001600160a01b03978816815295871660208701529386166040860152919094166060840152608083019390935260a082019290925260c081019190915260e00190565b6001600160a01b03968716815294861660208601529290941660408401526060830152608082019290925260a081019190915260c00190565b602080825260169082015275115490cc4c4d8dce8818dc99585d194819985a5b195960521b60408201526060019056fea2646970667358221220f529bcbda031bea54ccd6c591264c7791958fa08f2b8ee6c0f95c938b347bcfb64736f6c63430008000033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100365760003560e01c80635c60da1b1461003b578063891b1a0014610059575b600080fd5b61004361006c565b6040516100509190610254565b60405180910390f35b610043610067366004610208565b610090565b7f000000000000000000000000000000000000000000000000000000000000000081565b6000806100bc7f0000000000000000000000000000000000000000000000000000000000000000610174565b604051630ce3738760e41b81529091506001600160a01b0382169063ce373870906100f59033908b908b908b908b908b906004016102ac565b600060405180830381600087803b15801561010f57600080fd5b505af1158015610123573d6000803e3d6000fd5b505050507f59e16b922ce5d94cc6b2db6b42d1a6bc2dd08e71fbdd512f43c7750f6a045a25813389898989896040516101629796959493929190610268565b60405180910390a19695505050505050565b6000604051733d602d80600a3d3981f3363d3d373d3d3d363d7360601b81528260601b60148201526e5af43d82803e903d91602b57fd5bf360881b60288201526037816000f09150506001600160a01b0381166101ec5760405162461bcd60e51b81526004016101e3906102e5565b60405180910390fd5b919050565b80356001600160a01b03811681146101ec57600080fd5b600080600080600060a0868803121561021f578081fd5b610228866101f1565b9450610236602087016101f1565b94979496505050506040830135926060810135926080909101359150565b6001600160a01b0391909116815260200190565b6001600160a01b03978816815295871660208701529386166040860152919094166060840152608083019390935260a082019290925260c081019190915260e00190565b6001600160a01b03968716815294861660208601529290941660408401526060830152608082019290925260a081019190915260c00190565b602080825260169082015275115490cc4c4d8dce8818dc99585d194819985a5b195960521b60408201526060019056fea2646970667358221220f529bcbda031bea54ccd6c591264c7791958fa08f2b8ee6c0f95c938b347bcfb64736f6c63430008000033",
   "devdoc": {
     "kind": "dev",
     "methods": {},
