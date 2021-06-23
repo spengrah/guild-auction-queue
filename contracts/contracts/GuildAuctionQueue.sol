@@ -62,6 +62,7 @@ contract GuildAuctionQueue is ReentrancyGuard, Initializable {
     function submitBid(uint256 _amount, bytes32 _details)
         external
         nonReentrant
+        returns (uint256)
     {
         require(_amount >= minBid, "bid too low");
 
@@ -81,6 +82,8 @@ contract GuildAuctionQueue is ReentrancyGuard, Initializable {
         newBidId++;
 
         emit NewBid(_amount, msg.sender, id, _details);
+
+        return id;
     }
 
     function increaseBid(uint256 _amount, uint256 _id) external nonReentrant {
@@ -147,6 +150,12 @@ contract GuildAuctionQueue is ReentrancyGuard, Initializable {
         require(token.transfer(destination, bid.amount));
 
         emit BidAccepted(msg.sender, _id);
+    }
+
+    function changeMinBid(uint256 _newMin) external nonReentrant {
+        require(msg.sender == owner, "!owner");
+
+        minBid = _newMin;
     }
 
     // -- Helper Functions --

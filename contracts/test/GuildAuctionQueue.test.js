@@ -2,8 +2,8 @@ const { expect, use } = require('chai');
 const { ethers, waffle, deployments, getChainId } = require('hardhat');
 const { solidity } = waffle;
 const { BigNumber, getContract, getSigners } = ethers;
-const { get } = deployments;
-const { membersCanAccept, ownerCanAccept } = require('../deploy/args.json');
+// const { get } = deployments;
+const { membersCanAccept } = require('../deploy/args.json');
 
 use(solidity);
 
@@ -372,12 +372,12 @@ describe('GuildAuctionQueue', () => {
 
 			beforeEach(async () => {
 				await deployments.fixture(['accepterQueue']);
-				const auctionQueue = await getContract('accepterQueue');
-				const token = await getContract('TestERC20');
+				auctionQueue = await getContract('accepterQueue');
+				token = await getContract('TestERC20');
 
-				const queue_bidder = auctionQueue.connect(bidder);
+				queue_bidder = auctionQueue.connect(bidder);
 				await token.setBalance(bidder.address, 100);
-				const token_bidder = token.connect(bidder);
+				token_bidder = token.connect(bidder);
 				await token_bidder.approve(queue_bidder.address, 100);
 
 				await token.setBalance(destination.address, 0);
@@ -493,5 +493,73 @@ describe('GuildAuctionQueue', () => {
 				await expect(receipt).to.be.revertedWith('!owner');
 			});
 		});
+	});
+
+	describe('changeMinBid', () => {
+		let newMinBid;
+		beforeEach(async () => {
+			await deployments.fixture(['accepterQueue']); 
+			auctionQueue = await getContract('accepterQueue'); // owner is accepter
+			queue_accepter = auctionQueue.connect(accepter);
+			token = await getContract('TestERC20');
+		});
+
+		it('owner can increase minBid', async () => {
+			newMinBid = 500;
+			await queue_accepter.changeMinBid(newMinBid);
+
+			expect(await auctionQueue.minBid()).to.equal(newMinBid);
+		});
+
+		it('owner can decrease minBid', async () => {
+			newMinBid = 2;
+			await queue_accepter.changeMinBid(newMinBid);
+			expect(await auctionQueue.minBid()).to.equal(newMinBid);
+		});
+
+		it('owner can decrease minBid to zero', async () => {
+			newMinBid = 0;
+			await queue_accepter.changeMinBid(newMinBid);
+			expect(await auctionQueue.minBid()).to.equal(newMinBid);
+		});
+
+		it('owner can change minBid after bids are made', async () => {
+			queue_bidder = auctionQueue.connect(bidder);
+			await token.setBalance(bidder.address, 100);
+			token_bidder = token.connect(bidder);
+			await token_bidder.approve(queue_bidder.address, 100);
+			await queue_bidder.submitBid(BigNumber.from(75), DETAILS);
+
+			newMinBid = 1000;
+			await queue_accepter.changeMinBid(newMinBid);
+			expect(await auctionQueue.minBid()).to.equal(newMinBid);
+		});
+
+		it('submitter cannot withdraw bid below new minBid', async () => {
+			queue_bidder = auctionQueue.connect(bidder);
+			await token.setBalance(bidder.address, 100);
+			token_bidder = token.connect(bidder);
+			await token_bidder.approve(queue_bidder.address, 100);
+			await queue_bidder.submitBid(BigNumber.from(15), DETAILS); // original bid is higher than original minBid = 10
+
+			// set newMinBid below original bid
+			newMinBid = 2;
+			await queue_accepter.changeMinBid(newMinBid);
+
+			// decrease original bid to 1 (lower than newMinBid)
+			receipt = queue_bidder.withdrawBid(14, 0); // 
+
+			await expect(receipt).to.be.revertedWith('remaining bid too low');
+		})
+
+		it('non-owner cannot change bid', async () => {
+			queue_other = auctionQueue.connect(otherWallet);
+
+			newMinBid = 1000;
+			receipt = queue_other.changeMinBid(newMinBid);
+
+			await expect(receipt).to.be.revertedWith('!owner');
+		});
+		
 	});
 });
