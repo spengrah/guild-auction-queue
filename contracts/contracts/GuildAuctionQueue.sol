@@ -156,6 +156,8 @@ contract GuildAuctionQueue is ReentrancyGuard, Initializable {
         require(msg.sender == owner, "!owner");
 
         minBid = _newMin;
+
+        emit MinBidChanged(_newMin);
     }
 
     // -- Helper Functions --
@@ -194,4 +196,5 @@ contract GuildAuctionQueue is ReentrancyGuard, Initializable {
     event BidWithdrawn(uint256 newAmount, uint256 id);
     event BidCanceled(uint256 id);
     event BidAccepted(address acceptedBy, uint256 id);
+    event MinBidChanged(uint256 newMinBid);
 }

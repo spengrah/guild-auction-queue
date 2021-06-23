@@ -10,7 +10,7 @@
     "chai": "^4.3.4",
     "dotenv": "^9.0.2",
     "ethereum-waffle": "^3.3.0",
-    "hardhat": "^2.4.0",
+    "hardhat": "^2.4.1",
     "hardhat-deploy": "^0.7.10",
     "hardhat-deploy-ethers": "^v0.3.0-beta",
     "hardhat-gas-reporter": "^1.0.4",

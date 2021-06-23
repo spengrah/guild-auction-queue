@@ -25,7 +25,7 @@ contract GuildAuctionQueueFactory {
         address queueAddress = Clones.clone(implementation);
 
         IGuildAuctionQueue(queueAddress).init(
-            msg.sender,
+            msg.sender, // msg.sender becomes the owner
             _token,
             _destination,
             _lockupPeriod,

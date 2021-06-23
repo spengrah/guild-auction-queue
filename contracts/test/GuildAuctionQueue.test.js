@@ -535,6 +535,13 @@ describe('GuildAuctionQueue', () => {
 			expect(await auctionQueue.minBid()).to.equal(newMinBid);
 		});
 
+		it('emits MinBidChanged event', async () => {
+			newMinBid = 500;
+			receipt = queue_accepter.changeMinBid(newMinBid);
+
+			await expect(receipt).to.emit(queue_accepter, 'MinBidChanged').withArgs(newMinBid);
+		})
+
 		it('submitter cannot withdraw bid below new minBid', async () => {
 			queue_bidder = auctionQueue.connect(bidder);
 			await token.setBalance(bidder.address, 100);

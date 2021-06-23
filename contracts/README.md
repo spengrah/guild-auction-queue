@@ -74,9 +74,9 @@ A submitter decreasing their bid will need to ensure that their new bid amount e
 
 ### Rinkeby
 
-- **Implementation** contract: [0xC2C892BDa73905fDb5d7806018225c9151D6752F](https://rinkeby.etherscan.io/address/0xC2C892BDa73905fDb5d7806018225c9151D6752F#code)
+- **Implementation** contract: [0x53A96716A42EeedaF4CDE1d9049D7638b405B90C](https://rinkeby.etherscan.io/address/0x53A96716A42EeedaF4CDE1d9049D7638b405B90C#code)
 
-- **Factory** contract: [0x3e9886fD8BD12A237468826094f85FB6bbb4B1A1](https://rinkeby.etherscan.io/address/0x3e9886fD8BD12A237468826094f85FB6bbb4B1A1#code)
+- **Factory** contract: [0x6f5D1d2DAa3f35061da27EA7D9A034BfBff9503c](https://rinkeby.etherscan.io/address/0x6f5D1d2DAa3f35061da27EA7D9A034BfBff9503c#code)
 
 ## Local Development
 
