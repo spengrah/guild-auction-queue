@@ -1,14 +1,40 @@
 specVersion: 0.0.2
 schema:
-    file: ./schema.graphql
+    file: ./src/schema.graphql
 dataSources:
+    {{#factories}}
     - kind: ethereum/contract
-      name: GuildAuctionQueue
+      name: GuildAuctionQueueFactory{{factoryName}}
+      # prettier-ignore
       network: {{network}}
       source:
           address: '{{address}}'
-          abi: GuildAuctionQueue
+          abi: GuildAuctionQueueFactory
+          # prettier-ignore
           startBlock: {{startBlock}}
+      mapping:
+          kind: ethereum/events
+          apiVersion: 0.0.4
+          language: wasm/assemblyscript
+          entities:
+              - Queue
+          abis:
+              - name: GuildAuctionQueue
+                file: ../contracts/artifacts/contracts/GuildAuctionQueue.sol/GuildAuctionQueue.json
+              - name: GuildAuctionQueueFactory
+                file: ../contracts/artifacts/contracts/GuildAuctionQueueFactory.sol/GuildAuctionQueueFactory.json
+          eventHandlers:
+              - event: NewQueue(address,address,address,address,uint256,uint256,uint256)
+                handler: handleNewQueue
+          file: ./src/mappings/factory.ts
+    {{/factories}}
+templates:
+    - kind: ethereum/contract
+      name: GuildAuctionQueue
+      # prettier-ignore
+      network: {{network}}
+      source:
+          abi: GuildAuctionQueue
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.4
@@ -19,6 +45,7 @@ dataSources:
               - Acceptor
               - BidIncrease
               - BidWithdraw
+              - MinBidChange
           abis:
               - name: GuildAuctionQueue
                 file: ../contracts/artifacts/contracts/GuildAuctionQueue.sol/GuildAuctionQueue.json
@@ -33,4 +60,6 @@ dataSources:
                 handler: handleBidWithdrawn
               - event: NewBid(uint256,address,uint256,bytes32)
                 handler: handleNewBid
-          file: ./src/mapping.ts
+              - event: MinBidChanged(uint256)
+                handler: handleMinBidChanged
+          file: ./src/mappings/queue.ts

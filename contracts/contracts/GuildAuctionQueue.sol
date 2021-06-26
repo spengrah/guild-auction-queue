@@ -2,15 +2,22 @@
 
 pragma solidity ^0.8.0;
 
-import "./interfaces/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./interfaces/IMOLOCH.sol";
-import "./ReentrancyGuard.sol";
+import "./interfaces/IMinion.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
-contract GuildAuctionQueue is ReentrancyGuard {
+contract GuildAuctionQueue is ReentrancyGuard, Initializable {
     IERC20 public token;
-    IMOLOCH public moloch;
+    address public owner; // typically a dao's minion
     address public destination; // where tokens go when bids are accepted
     uint256 public lockupPeriod; // period for which bids are locked and cannot be withdrawn, in seconds
+    uint256 public minBid; // adjustable by the owner
+
+    uint256 public membersCanAccept; // whether moloch members can accept bids individually, or if the owner must do so (eg with a minion proposal)
+    uint256 public minShares; // the number of moloch shares a member must have to be eligible to accept a bid; only set if memberCanAccept == 1
+
     uint256 public newBidId; // the id of the next bid to be submitted; starts at 0
 
     // -- Data Models --
@@ -23,28 +30,42 @@ contract GuildAuctionQueue is ReentrancyGuard {
         uint256 amount;
         address submitter;
         uint256 createdAt; // block.timestamp from tx when bid was created
-        bytes32 details; // details of bid, eg an IPFS hash
         BidStatus status;
     }
 
     // -- Functions --
 
-    constructor(
+    function init(
+        address _owner,
         address _token,
-        address _moloch,
         address _destination,
-        uint256 _lockupPeriod
-    ) {
+        uint256 _lockupPeriod,
+        uint256 _minBid,
+        uint256 _minShares
+    ) external initializer {
+        require(_token != address(0), "invalid token");
+        require(_destination != address(0), "invalid destination");
+
+        if (_minShares > 0) {
+            minShares = _minShares;
+            membersCanAccept = 1;
+        }
+        // else: solidity uints default to 0 so no need to explicitly set minShares or membersCanAccept to 0
+
         token = IERC20(_token);
-        moloch = IMOLOCH(_moloch);
         destination = _destination;
         lockupPeriod = _lockupPeriod;
+        minBid = _minBid;
+        owner = _owner;
     }
 
     function submitBid(uint256 _amount, bytes32 _details)
         external
         nonReentrant
+        returns (uint256)
     {
+        require(_amount >= minBid, "bid too low");
+
         require(
             token.transferFrom(msg.sender, address(this), _amount),
             "token transfer failed"
@@ -54,7 +75,6 @@ contract GuildAuctionQueue is ReentrancyGuard {
 
         bid.amount = _amount;
         bid.submitter = msg.sender;
-        bid.details = _details;
         bid.status = BidStatus.queued;
 
         bid.createdAt = block.timestamp;
@@ -62,13 +82,14 @@ contract GuildAuctionQueue is ReentrancyGuard {
         newBidId++;
 
         emit NewBid(_amount, msg.sender, id, _details);
+
+        return id;
     }
 
     function increaseBid(uint256 _amount, uint256 _id) external nonReentrant {
         require(_id < newBidId, "invalid bid");
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
-        require(bid.submitter == msg.sender, "must be submitter");
 
         require(
             token.transferFrom(msg.sender, address(this), _amount),
@@ -85,7 +106,8 @@ contract GuildAuctionQueue is ReentrancyGuard {
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
 
-        require(bid.submitter == msg.sender, "must be submitter");
+        require(bid.submitter == msg.sender, "!submitter");
+        require(bid.amount - _amount >= minBid, "remaining bid too low");
 
         require(
             (bid.createdAt + lockupPeriod) < block.timestamp,
@@ -104,7 +126,7 @@ contract GuildAuctionQueue is ReentrancyGuard {
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
 
-        require(bid.submitter == msg.sender, "must be submitter");
+        require(bid.submitter == msg.sender, "!submitter");
 
         require(
             (bid.createdAt + lockupPeriod) < block.timestamp,
@@ -118,7 +140,7 @@ contract GuildAuctionQueue is ReentrancyGuard {
         emit BidCanceled(_id);
     }
 
-    function acceptBid(uint256 _id) external memberOnly nonReentrant {
+    function acceptBid(uint256 _id) external accepterOnly nonReentrant {
         require(_id < newBidId, "invalid bid");
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
@@ -130,16 +152,35 @@ contract GuildAuctionQueue is ReentrancyGuard {
         emit BidAccepted(msg.sender, _id);
     }
 
+    function changeMinBid(uint256 _newMin) external nonReentrant {
+        require(msg.sender == owner, "!owner");
+
+        minBid = _newMin;
+
+        emit MinBidChanged(_newMin);
+    }
+
     // -- Helper Functions --
 
     function isMember(address user) public view returns (bool) {
-        (, uint256 shares, , , , ) = moloch.members(user);
-        return shares > 0;
+        // if owner is a minion, fetch its moloch parent
+        IMinion maybeMinion = IMinion(owner);
+        address molochAddress = maybeMinion.moloch(); // reverts if owner doesn't have a moloch getter
+
+        IMOLOCH moloch = IMOLOCH(molochAddress);
+        address member = moloch.memberAddressByDelegateKey(user);
+        (, uint256 shares, , , , ) = moloch.members(member);
+        return shares >= minShares;
     }
 
     // -- Modifiers --
-    modifier memberOnly() {
-        require(isMember(msg.sender), "not member of moloch");
+    modifier accepterOnly() {
+        if (membersCanAccept == 1) {
+            require(isMember(msg.sender), "!full moloch member");
+        } else {
+            require(msg.sender == owner, "!owner");
+        }
+
         _;
     }
 
@@ -155,4 +196,5 @@ contract GuildAuctionQueue is ReentrancyGuard {
     event BidWithdrawn(uint256 newAmount, uint256 id);
     event BidCanceled(uint256 id);
     event BidAccepted(address acceptedBy, uint256 id);
+    event MinBidChanged(uint256 newMinBid);
 }

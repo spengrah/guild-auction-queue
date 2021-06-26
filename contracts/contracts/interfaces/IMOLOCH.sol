@@ -26,6 +26,11 @@ interface IMOLOCH {
             uint256
         );
 
+    function memberAddressByDelegateKey(address user)
+        external
+        view
+        returns (address);
+
     function userTokenBalances(address user, address token)
         external
         view

@@ -1,7 +1,8 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.0;
 
-contract MolochTest {
-
+contract TestMoloch {
     struct Member {
         address delegateKey; // the key responsible for submitting proposals and voting - defaults to member address unless updated
         uint256 shares; // the # of voting shares assigned to this member
@@ -13,10 +14,10 @@ contract MolochTest {
 
     mapping(address => Member) public members;
 
-    constructor(
-        address _summoner
-    ) {
+    mapping(address => address) public memberAddressByDelegateKey;
+
+    constructor(address _summoner) {
         members[_summoner] = Member(_summoner, 1, 0, true, 0, 0);
-       
+        memberAddressByDelegateKey[_summoner] = _summoner;
     }
 }

@@ -1,3 +1,3 @@
 module.exports = {
-	skipFiles: ['test/MolochTest.sol', 'test/TestERC20.sol'],
+	skipFiles: ['test/TestMoloch.sol', 'test/TestERC20.sol', 'test/TestMinion.sol', 'test/IGuildAuctionQueueFactory.sol'],
 };
