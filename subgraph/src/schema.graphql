@@ -1,18 +1,26 @@
 type Queue @entity {
 	id: ID!
 	token: Bytes!
-	moloch: Bytes!
+	owner: Bytes!
 	destination: Bytes!
 	lockupPeriod: BigInt!
 	minShares: BigInt!
+	minBid: BigInt!
+	accepterType: AccepterType!
 	network: String!
 	bids: [Bid!]! @derivedFrom(field: "queue")
+	minBidChanges: [MinBidChange!] @derivedFrom(field: "queue")
 }
 
 enum BidStatus {
 	queued
 	accepted
 	canceled
+}
+
+enum AccepterType {
+	owner
+	molochMembers
 }
 
 type Bid @entity {
@@ -47,14 +55,23 @@ type BidIncrease @entity {
 	id: ID!
 	bid: Bid!
 	amount: BigInt!
-	createdAt: BigInt!
-	txHash: Bytes!
+	increasedAt: BigInt!
+	increaseTxHash: Bytes!
 }
 
 type BidWithdraw @entity {
 	id: ID!
 	bid: Bid!
 	amount: BigInt!
-	createdAt: BigInt!
-	txHash: Bytes!
+	withdrawnAt: BigInt!
+	withdrawTxHash: Bytes!
+}
+
+type MinBidChange @entity {
+	id: ID!
+	oldAmount: BigInt!
+	newAmount: BigInt!
+	queue: Queue!
+	changedAt: BigInt!
+	changeTxHash: Bytes!
 }

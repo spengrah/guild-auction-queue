@@ -3,21 +3,28 @@ import {
   BidCanceled,
   BidIncreased,
   BidWithdrawn,
-  NewBid
-} from "../../generated/GuildAuctionQueue/GuildAuctionQueue"
-import { Bid, Submitter, Accepter, BidIncrease, BidWithdraw, } from "../../generated/schema"
+  NewBid,
+  MinBidChanged
+} from "../../generated/templates/GuildAuctionQueue/GuildAuctionQueue"
+import { Queue, Bid, Submitter, Accepter, BidIncrease, BidWithdraw, MinBidChange } from "../../generated/schema"
+import { log } from '@graphprotocol/graph-ts';
 
 export function handleNewBid(event: NewBid): void {
-  let bid = new Bid(event.params.id.toHex())
+  log.info('handleNewBid', [event.address.toHexString() + "-" + event.params.id.toHexString()])
+
+  let bid = new Bid(event.address.toHexString() + "-" + event.params.id.toHexString())
+
+  bid.amount = event.params.amount
+  let queue = Queue.load(event.address.toHex())
+  bid.queue = queue.id
 
   let submitterId = event.params.submitter.toHexString()
   let submitter = Submitter.load(submitterId)
   if (submitter == null) {
     submitter = new Submitter(submitterId)
   }
-
-  bid.amount = event.params.amount
   bid.submitter = submitter.id
+
   bid.status = "queued"
   bid.details = event.params.details
   bid.createdAt = event.block.timestamp
@@ -28,13 +35,13 @@ export function handleNewBid(event: NewBid): void {
 }
 
 export function handleBidIncreased(event: BidIncreased): void {
-  let bid = Bid.load(event.params.id.toHex())
+  let bid = Bid.load(event.address.toHexString() + "-" + event.params.id.toHexString())
   let increase = new BidIncrease(event.transaction.hash.toHexString() + "-" + event.logIndex.toString())
 
   increase.amount = event.params.newAmount.minus(bid.amount)
   increase.bid = bid.id
-  increase.createdAt = event.block.timestamp
-  increase.txHash = event.transaction.hash
+  increase.increasedAt = event.block.timestamp
+  increase.increaseTxHash = event.transaction.hash
 
   bid.amount = event.params.newAmount
 
@@ -43,13 +50,13 @@ export function handleBidIncreased(event: BidIncreased): void {
 }
 
 export function handleBidWithdrawn(event: BidWithdrawn): void {
-  let bid = Bid.load(event.params.id.toHex())
+  let bid = Bid.load(event.address.toHexString() + "-" + event.params.id.toHexString())
   let withdraw = new BidWithdraw(event.transaction.hash.toHexString() + "-" + event.logIndex.toString())
 
   withdraw.amount = bid.amount.minus(event.params.newAmount)
   withdraw.bid = bid.id
-  withdraw.createdAt = event.block.timestamp
-  withdraw.txHash = event.transaction.hash
+  withdraw.withdrawnAt = event.block.timestamp
+  withdraw.withdrawTxHash = event.transaction.hash
 
   bid.amount = event.params.newAmount
 
@@ -58,13 +65,13 @@ export function handleBidWithdrawn(event: BidWithdrawn): void {
 }
 
 export function handleBidAccepted(event: BidAccepted): void {
-  let bid = Bid.load(event.params.id.toHex())
+  let bid = Bid.load(event.address.toHexString() + "-" + event.params.id.toHexString())
 
-  let accepterId = event.params.acceptedBy.toHexString() 
+  let accepterId = event.params.acceptedBy.toHexString()
   let accepter = Accepter.load(accepterId)
   if (accepter == null) {
     accepter = new Accepter(accepterId)
-  } 
+  }
 
   bid.accepter = accepter.id
   bid.status = "accepted"
@@ -76,10 +83,8 @@ export function handleBidAccepted(event: BidAccepted): void {
 
 }
 
-
-
 export function handleBidCanceled(event: BidCanceled): void {
-  let bid = Bid.load(event.params.id.toHex())
+  let bid = Bid.load(event.address.toHexString() + "-" + event.params.id.toHexString())
 
   bid.status = "canceled"
   bid.canceledAt = event.block.timestamp
@@ -88,8 +93,23 @@ export function handleBidCanceled(event: BidCanceled): void {
   bid.save()
 }
 
+export function handleMinBidChanged(event: MinBidChanged): void {
 
+  let minBidChange = new MinBidChange(event.transaction.hash.toHexString())
+  log.debug('minBidChanged event address is {}', [event.address.toHexString()])
+  log.debug('minBidChanged tx hash is {}', [event.transaction.hash.toHexString()])
 
+  let queue = Queue.load(event.address.toHexString())
+  minBidChange.queue = queue.id
 
+  minBidChange.oldAmount = queue.minBid
 
+  let newMinBid = event.params.newMinBid
+  queue.minBid = newMinBid
+  minBidChange.newAmount = newMinBid
+  minBidChange.changedAt = event.block.timestamp
+  minBidChange.changeTxHash = event.transaction.hash
 
+  queue.save()
+  minBidChange.save()
+}

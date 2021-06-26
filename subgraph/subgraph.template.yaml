@@ -24,7 +24,7 @@ dataSources:
               - name: GuildAuctionQueueFactory
                 file: ../contracts/artifacts/contracts/GuildAuctionQueueFactory.sol/GuildAuctionQueueFactory.json
           eventHandlers:
-              - event: NewQueue(address,address,address,address,uint256,uint256)
+              - event: NewQueue(address,address,address,address,uint256,uint256,uint256)
                 handler: handleNewQueue
           file: ./src/mappings/factory.ts
     {{/factories}}
@@ -45,6 +45,7 @@ templates:
               - Acceptor
               - BidIncrease
               - BidWithdraw
+              - MinBidChange
           abis:
               - name: GuildAuctionQueue
                 file: ../contracts/artifacts/contracts/GuildAuctionQueue.sol/GuildAuctionQueue.json
@@ -59,4 +60,6 @@ templates:
                 handler: handleBidWithdrawn
               - event: NewBid(uint256,address,uint256,bytes32)
                 handler: handleNewBid
+              - event: MinBidChanged(uint256)
+                handler: handleMinBidChanged
           file: ./src/mappings/queue.ts
