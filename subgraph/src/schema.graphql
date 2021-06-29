@@ -53,6 +53,7 @@ type Accepter @entity {
 
 type BidIncrease @entity {
 	id: ID!
+	increasedBy: Bytes!
 	bid: Bid!
 	amount: BigInt!
 	increasedAt: BigInt!

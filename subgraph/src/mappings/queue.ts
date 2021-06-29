@@ -38,6 +38,7 @@ export function handleBidIncreased(event: BidIncreased): void {
   let bid = Bid.load(event.address.toHexString() + "-" + event.params.id.toHexString())
   let increase = new BidIncrease(event.transaction.hash.toHexString() + "-" + event.logIndex.toString())
 
+  increase.increasedBy = event.transaction.from
   increase.amount = event.params.newAmount.minus(bid.amount)
   increase.bid = bid.id
   increase.increasedAt = event.block.timestamp
