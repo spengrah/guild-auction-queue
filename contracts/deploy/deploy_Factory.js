@@ -7,7 +7,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 	await deploy('GuildAuctionQueueFactory', {
 		from: deployer,
 		args: [Implementation.address],
-		skipIfAlreadyDeployed: true,
+		skipIfAlreadyDeployed: false,
 		log: true,
 	});
 };
