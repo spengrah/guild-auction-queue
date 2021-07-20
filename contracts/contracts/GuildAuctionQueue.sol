@@ -66,10 +66,12 @@ contract GuildAuctionQueue is ReentrancyGuard, Initializable {
     {
         require(_amount >= minBid, "bid too low");
 
-        require(
-            token.transferFrom(msg.sender, address(this), _amount),
-            "token transfer failed"
-        );
+        if (_amount > 0) {
+            require(
+                token.transferFrom(msg.sender, address(this), _amount),
+                "token transfer failed"
+            );
+        }
 
         Bid storage bid = bids[newBidId];
 
@@ -87,6 +89,7 @@ contract GuildAuctionQueue is ReentrancyGuard, Initializable {
     }
 
     function increaseBid(uint256 _amount, uint256 _id) external nonReentrant {
+        require(_amount > 0, "can't increase 0");
         require(_id < newBidId, "invalid bid");
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");
@@ -102,6 +105,7 @@ contract GuildAuctionQueue is ReentrancyGuard, Initializable {
     }
 
     function withdrawBid(uint256 _amount, uint32 _id) external nonReentrant {
+        require(_amount > 0, "can't withdraw 0");
         require(_id < newBidId, "invalid bid");
         Bid storage bid = bids[_id];
         require(bid.status == BidStatus.queued, "bid inactive");

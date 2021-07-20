@@ -96,6 +96,21 @@ describe('GuildAuctionQueue', () => {
 				.to.emit(queue_bidder, 'NewBid')
 				.withArgs(BigNumber.from(75), bidder.address, 0, DETAILS);
 		});
+
+		it('does not need a token approval for bid of 0', async () => {
+			await deployments.fixture(['noMinBid']);
+			const queue = await getContract('noMinBid');
+
+			queue_bidder = queue.connect(bidder);
+
+			await queue_bidder.submitBid(0, DETAILS);
+
+			bid = await queue.bids(0);
+			expect(bid.submitter).to.equal(bidder.address);
+			expect(bid.amount).to.equal(BigNumber.from(0));
+			expect(await queue.newBidId()).to.equal(1);
+
+		});
 	});
 
 	describe('increaseBid', () => {
@@ -157,6 +172,11 @@ describe('GuildAuctionQueue', () => {
 				await queue_bidder.submitBid(BigNumber.from(75), DETAILS);
 			});
 
+			it('reverts on increase of 0', async () => {
+				receipt = queue_bidder.increaseBid(BigNumber.from(0), 1);
+				await expect(receipt).to.be.revertedWith("can't increase 0");
+			});
+
 			it('reverts on invalid bid', async () => {
 				receipt = queue_bidder.increaseBid(BigNumber.from(20), 1);
 				await expect(receipt).to.be.revertedWith('invalid bid');
@@ -216,6 +236,11 @@ describe('GuildAuctionQueue', () => {
 				[ auctionQueue, queue_bidder, token, token_bidder ]= await setup(bidder);
 
 				await queue_bidder.submitBid(BigNumber.from(75), DETAILS);
+			});
+
+			it('reverts on withdrawal of 0', async () => {
+				receipt = queue_bidder.withdrawBid(BigNumber.from(0), 2);
+				await expect(receipt).to.be.revertedWith("can't withdraw 0");
 			});
 
 			it('reverts on invalid bid', async () => {
