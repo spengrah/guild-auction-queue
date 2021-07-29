@@ -72,6 +72,14 @@ A submitter decreasing their bid will need to ensure that their new bid amount e
 
 ## Deployments
 
+### xDAI
+
+#### Current
+
+- **Implementation** contract: [0xC5c3c24353cB3A0bC383E8D22EEcb77C29B08eBc](https://blockscout.com/xdai/mainnet/address/0xC5c3c24353cB3A0bC383E8D22EEcb77C29B08eBc/contracts)
+
+- **Factory** contract: [0xE81597289A249aE725c2D80E7848DbFa9708c22D](https://blockscout.com/xdai/mainnet/address/0xE81597289A249aE725c2D80E7848DbFa9708c22D/contracts)
+
 ### Rinkeby
 
 #### Current
