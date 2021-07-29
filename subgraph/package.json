@@ -7,6 +7,7 @@
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy-rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ slgraham/guildauctionqueues-rinkeby",
+    "deploy-xdai": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ slgraham/guildauctionqueues-xdai",
     "create-local": "graph create --node http://localhost:8020/ slgraham/guildauctionqueues-mainnet",
     "remove-local": "graph remove --node http://localhost:8020/ slgraham/guildauctionqueues-mainnet",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 slgraham/guildauctionqueues-mainnet",
